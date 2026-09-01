@@ -1,0 +1,58 @@
+---
+import Divider from './Divider.astro';
+import T from './T.astro';
+import { faq } from '../data/site';
+---
+<section class="section faq" id="faq">
+  <Divider dir="right" color="var(--violet-900)" />
+  <div class="wrap faq__wrap">
+    <p class="eyebrow">FAQ</p>
+    <h2 class="h2">Six questions, six answers.</h2>
+
+    <div class="acc">
+      {faq.map((item) => (
+        <details class="acc__item" name="faq">
+          <summary class="acc__q">
+            <span>{item.q}</span>
+            <svg class="acc__chev" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M12 15.4 5.6 9l1.4-1.4 5 5 5-5L18.4 9z"/>
+            </svg>
+          </summary>
+          <p class="acc__a"><T text={item.a} /></p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq{ background: var(--violet-900); }
+  .faq__wrap{ max-width: 860px; }
+
+  .acc{ margin-top: clamp(26px, 4vw, 40px); border-top: 1px solid var(--line); }
+  .acc__item{ border-bottom: 1px solid var(--line); }
+  .acc__q{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: clamp(18px, 2.2vw, 24px) 4px;
+    cursor: pointer;
+    list-style: none;
+    font-size: clamp(16px, 1.8vw, 19px);
+    font-weight: 800;
+    transition: color .16s ease;
+  }
+  .acc__q::-webkit-details-marker{ display: none; }
+  .acc__q:hover{ color: var(--gold); }
+  .acc__chev{ width: 22px; height: 22px; flex: 0 0 auto; color: var(--gold); transition: transform .22s ease; }
+  .acc__item[open] .acc__chev{ transform: rotate(180deg); }
+  .acc__a{
+    padding: 0 4px clamp(20px, 2.4vw, 26px);
+    max-width: 68ch;
+    font-size: 15px;
+    line-height: 1.65;
+    font-weight: 500;
+    color: var(--muted);
+  }
+</style>

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+
+# Source media the built site never references — kept locally, out of history.
+/V1trailer-sous-titre.mp4
+/Refaire bébé Trump T pose (6).png
+/assets/
+__pycache__/
+*.pyc

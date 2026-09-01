@@ -1,0 +1,81 @@
+---
+import Icon from './Icon.astro';
+import Divider from './Divider.astro';
+import { socials, navLinks } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="ft">
+  <Divider dir="left" color="var(--violet-ink)" />
+  <div class="wrap">
+    <div class="ft__top">
+      <div class="ft__brand">
+        <img class="ft__logo" src="/img/logo.png" alt="Baby Guy" width="900" height="583" />
+        <p class="ft__tag">Real-stakes battle royale. 16 players, 3 rounds, one pot.</p>
+      </div>
+
+      <nav class="ft__nav" aria-label="Footer">
+        {navLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+        <a href="#whitelist">Whitelist</a>
+      </nav>
+
+      <div class="ft__socials">
+        {socials.map((s) => (
+          <a href={s.href} aria-label={s.name} rel="noopener"><Icon name={s.icon} /></a>
+        ))}
+      </div>
+    </div>
+
+    <div class="ft__legal">
+      <p class="ft__warn">
+        <strong>18+ only.</strong> Baby Guy plays for real money: a match can cost you
+        your entire stake. Only ever stake what you can afford to lose.
+      </p>
+      <p class="ft__warn">
+        <strong>Jurisdiction restrictions.</strong> Paid matches are off limits wherever
+        this kind of game is regulated or prohibited. The list of excluded countries is
+        published before deposits open, and a whitelist spot does not guarantee access
+        to the game.
+      </p>
+      <p class="ft__copy">© {year} Baby Guy — No promise of profit. The numbers on this page describe a split rule, not a return.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft{ position: relative; background: var(--violet-ink); padding: clamp(58px, 7.4vw, 100px) 0 clamp(30px, 4vw, 44px); border-top: 1px solid var(--line); }
+
+  .ft__top{
+    display: grid;
+    grid-template-columns: 1.4fr 1fr auto;
+    gap: clamp(22px, 3vw, 44px);
+    align-items: start;
+    padding-bottom: clamp(26px, 3.4vw, 40px);
+    border-bottom: 1px solid var(--line);
+  }
+  .ft__logo{ height: 56px; width: auto; }
+  .ft__tag{ margin-top: 14px; font-size: 13.5px; font-weight: 600; color: var(--muted); max-width: 34ch; line-height: 1.5; }
+
+  .ft__nav{ display: flex; flex-direction: column; gap: 10px; }
+  .ft__nav a{ font-size: 13.5px; font-weight: 700; color: var(--muted); width: fit-content; }
+  .ft__nav a:hover{ color: var(--gold); }
+
+  .ft__socials{ display: flex; gap: 10px; }
+  .ft__socials a{
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1.6px solid rgba(255,255,255,.22);
+    display: grid; place-items: center;
+    transition: all .18s ease;
+  }
+  .ft__socials :global(svg){ width: 16px; height: 16px; }
+  .ft__socials a:hover{ background: var(--gold); border-color: var(--gold); color: var(--violet-ink); }
+
+  .ft__legal{ padding-top: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; gap: 12px; }
+  .ft__warn{ font-size: 12.5px; line-height: 1.6; color: rgba(255,255,255,.5); max-width: 92ch; }
+  .ft__warn strong{ color: rgba(255,255,255,.82); font-weight: 800; }
+  .ft__copy{ margin-top: 6px; font-size: 12px; color: rgba(255,255,255,.35); }
+
+  @media (max-width: 820px){
+    .ft__top{ grid-template-columns: 1fr; }
+  }
+</style>

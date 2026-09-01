@@ -1,0 +1,24 @@
+---
+interface Props {
+  /** file name in /public/videos (no extension) */
+  src: string;
+  /** poster name in /public/posters (no extension) */
+  poster: string;
+  /** the trailer is the only one loaded immediately */
+  eager?: boolean;
+  label?: string;
+}
+const { src, poster, eager = false, label = '' } = Astro.props;
+---
+<video
+  class="loopvid"
+  muted
+  loop
+  playsinline
+  preload="metadata"
+  aria-label={label}
+  poster={`/posters/${poster}.jpg`}
+  data-src={eager ? undefined : `/videos/${src}.mp4`}
+  src={eager ? `/videos/${src}.mp4` : undefined}
+  autoplay={eager || undefined}
+></video>

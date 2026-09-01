@@ -1,0 +1,231 @@
+---
+import Icon from './Icon.astro';
+import { navLinks, socials } from '../data/site';
+---
+<header class="hdr" id="hdr">
+  <div class="hdr__bar">
+    <div class="hdr__inner">
+      <a class="hdr__logo" href="#top" aria-label="Baby Guy — back to top">
+        <img src="/img/logo.png" alt="Baby Guy" width="900" height="583" />
+      </a>
+
+      <nav class="hdr__nav" aria-label="Sections">
+        {navLinks.map((l) => <a class="hdr__link" href={l.href}>{l.label}</a>)}
+      </nav>
+
+      <div class="hdr__actions">
+        <div class="hdr__socials">
+          {socials.map((s) => (
+            <a class="hdr__social" href={s.href} aria-label={s.name} rel="noopener">
+              <Icon name={s.icon} />
+            </a>
+          ))}
+        </div>
+
+        <a class="btn btn--gold btn--sm" href="#whitelist">Join the whitelist</a>
+
+        <button class="hdr__burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mmenu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <svg class="hdr__curve" viewBox="0 0 1440 48" preserveAspectRatio="none" aria-hidden="true">
+    <path class="hdr__curve-fill" d="M0,0 H1440 V5 Q720,47 0,5 Z" />
+    <path class="hdr__curve-line" d="M0,5 Q720,47 1440,5" vector-effect="non-scaling-stroke" />
+  </svg>
+</header>
+
+<div class="mmenu" id="mmenu">
+  {navLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+  <div class="mmenu__socials">
+    {socials.map((s) => (
+      <a href={s.href} aria-label={s.name} rel="noopener"><Icon name={s.icon} /></a>
+    ))}
+  </div>
+</div>
+
+<style>
+  .hdr{
+    position: relative;
+    z-index: 100;
+  }
+  .hdr__bar{
+    height: var(--header-h);
+    background: linear-gradient(180deg, #46349B 0%, #3A2B84 55%, #332674 100%);
+    transition: height .22s ease;
+  }
+  .hdr__inner{
+    max-width: 1500px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 clamp(14px, 2.2vw, 34px);
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 2vw, 34px);
+  }
+
+  /* --- Curved bottom edge, laid over the content below --- */
+  .hdr__curve{
+    position: absolute;
+    top: calc(100% - 1px);
+    left: 0;
+    width: 100%;
+    height: var(--curve-h);
+    pointer-events: none;
+    transition: height .22s ease;
+  }
+  .hdr__curve-fill{ fill: #332674; }
+  .hdr__curve-line{ fill: none; stroke: var(--gold); stroke-width: 6; stroke-linecap: round; }
+
+  /* --- Logo --- */
+  .hdr__logo{ flex: 0 0 auto; margin-right: clamp(4px, 1.4vw, 22px); transition: transform .18s ease; }
+  .hdr__logo:hover{ transform: scale(1.05); }
+  .hdr__logo img{
+    height: clamp(44px, 5.2vw, 78px);
+    width: auto;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,.45));
+    transition: height .22s ease;
+  }
+
+  /* --- Nav --- */
+  .hdr__nav{ display: flex; align-items: center; gap: clamp(18px, 2.4vw, 40px); }
+  .hdr__link{
+    position: relative;
+    font-size: clamp(12px, .95vw, 14.5px);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    padding: 6px 0;
+    white-space: nowrap;
+    transition: color .16s ease;
+  }
+  .hdr__link::after{
+    content: "";
+    position: absolute; left: 0; right: 100%; bottom: 0;
+    height: 3px; border-radius: 3px; background: var(--gold);
+    transition: right .22s ease;
+  }
+  .hdr__link:hover{ color: var(--gold); }
+  .hdr__link:hover::after{ right: 0; }
+
+  /* --- Actions --- */
+  .hdr__actions{ display: flex; align-items: center; gap: clamp(10px, 1.4vw, 20px); margin-left: auto; }
+  .hdr__socials{ display: flex; align-items: center; gap: 9px; }
+  .hdr__social{
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1.6px solid rgba(255,255,255,.28);
+    display: grid; place-items: center;
+    transition: all .18s ease;
+  }
+  .hdr__social :global(svg){ width: 16px; height: 16px; }
+  .hdr__social:hover{ background: var(--gold); border-color: var(--gold); color: var(--violet-ink); transform: translateY(-2px); }
+
+  /* --- Burger --- */
+  .hdr__burger{
+    width: 44px; height: 44px;
+    border: 0; border-radius: 50%;
+    display: none; place-content: center; gap: 5px;
+    cursor: pointer;
+    background: linear-gradient(180deg, #9C7BF5 0%, #7E5FE6 50%, #6446C9 100%);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.3), 0 4px 12px rgba(0,0,0,.35);
+  }
+  .hdr__burger span{ display:block; width:19px; height:2.6px; border-radius:3px; background:#fff; transition: transform .22s ease, opacity .18s ease; }
+  .hdr__burger.is-open span:nth-child(1){ transform: translateY(7.6px) rotate(45deg); }
+  .hdr__burger.is-open span:nth-child(2){ opacity: 0; }
+  .hdr__burger.is-open span:nth-child(3){ transform: translateY(-7.6px) rotate(-45deg); }
+
+  /* ============================================================
+     STICKY STATE: past 600 px only the logo and the
+     whitelist button remain.
+     ============================================================ */
+  .hdr.is-stuck{
+    position: fixed;
+    filter: drop-shadow(0 8px 20px rgba(20,10,50,.28));
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    animation: drop .28s ease both;
+  }
+  @keyframes drop{ from{ transform: translateY(-100%); } to{ transform: translateY(0); } }
+
+  .hdr.is-stuck .hdr__bar{ height: var(--header-h-sm); }
+  .hdr.is-stuck .hdr__logo img{ height: 40px; }
+  .hdr.is-stuck .hdr__nav,
+  .hdr.is-stuck .hdr__socials{ display: none; }
+  .hdr.is-stuck .hdr__curve{ height: 16px; }
+
+  /* --- Mobile menu --- */
+  .mmenu{
+    display: none;
+    position: fixed;
+    top: var(--header-h-sm);
+    left: 0; right: 0;
+    z-index: 99;
+    flex-direction: column;
+    background: #332674;
+    border-bottom: 4px solid var(--gold);
+    padding: 10px 22px 20px;
+  }
+  .mmenu.is-open{ display: flex; }
+  .mmenu a{
+    padding: 15px 2px;
+    font-weight: 800; text-transform: uppercase; letter-spacing: .6px; font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+  .mmenu__socials{ display: flex; gap: 18px; padding-top: 16px; }
+  .mmenu__socials a{ border: 0; padding: 0; }
+  .mmenu__socials :global(svg){ width: 20px; height: 20px; }
+
+  @media (max-width: 1120px){
+    .hdr__nav{ display: none; }
+    .hdr__burger{ display: grid; }
+  }
+  @media (max-width: 860px){
+    :global(:root){ --header-h: 78px; --curve-h: 24px; }
+    .hdr__socials{ display: none; }
+    .hdr .btn--sm{ padding: 12px 16px; font-size: 11.5px; }
+  }
+  @media (max-width: 560px){
+    :global(:root){ --header-h: 66px; --curve-h: 20px; }
+    .hdr__inner{ padding: 0 12px; gap: 8px; }
+    .hdr__actions{ gap: 8px; }
+    .hdr .btn--sm{ padding: 11px 13px; font-size: 10.5px; letter-spacing: .2px; }
+    .hdr__burger{ width: 40px; height: 40px; }
+  }
+</style>
+
+<script>
+  // Sticky past 600 px of scroll, reduced to logo + button.
+  const hdr = document.getElementById('hdr')!;
+  const burger = document.getElementById('burger')!;
+  const mmenu = document.getElementById('mmenu')!;
+  const THRESHOLD = 600;
+
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      hdr.classList.toggle('is-stuck', window.scrollY > THRESHOLD);
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  function closeMenu() {
+    mmenu.classList.remove('is-open');
+    burger.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+  }
+  burger.addEventListener('click', () => {
+    const open = mmenu.classList.toggle('is-open');
+    burger.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+  });
+  mmenu.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+</script>

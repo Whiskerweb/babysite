@@ -1,0 +1,296 @@
+---
+import Divider from './Divider.astro';
+import T from './T.astro';
+import Usdc from './Usdc.astro';
+import { COMMISSION_PCT, TABLE_STAKE, PLAYERS, POT, BURN_COUNTER, BURN_WALLET } from '../data/site';
+
+// One table, one pot, two destinations. Everything below is derived so the
+// numbers can never drift from site.ts.
+const commission = (POT * COMMISSION_PCT) / 100;   // 8 USDC
+const toPlayers  = POT - commission;               // 72 USDC
+const playerPct  = 100 - COMMISSION_PCT;           // 90 %
+
+// Three beats, read top to bottom. Not five: the middle two were the same 8 USDC
+// said twice, which is what made the old flow feel vague.
+const chain = [
+  {
+    v: `${commission} {USDC}`,
+    t: 'is the commission',
+    x: `${COMMISSION_PCT}% of the pot on every table. It is the only cut the game takes — there is no second fee anywhere.`,
+  },
+  {
+    v: '100%',
+    t: 'buys token back',
+    x: 'The whole commission goes to the open market and buys token at market price. Nothing is kept, nothing is routed elsewhere.',
+  },
+  {
+    v: '0',
+    t: 'comes back',
+    x: 'Every token bought is sent to a dead address. Supply falls after every single match, and it never falls back.',
+  },
+];
+---
+<section class="section token" id="the-token">
+  <Divider dir="right" color="var(--sky)" />
+  <div class="wrap">
+    <p class="eyebrow">Token &amp; burn</p>
+    <h2 class="h2">Every match takes tokens <br class="h2__brk" /> out of circulation.</h2>
+    <p class="lede token__lede">
+      The commission is the burn. It is not a fee that goes somewhere else —
+      all of it buys token back, and every token bought back is destroyed.
+    </p>
+
+    <!-- The pot, to scale. -->
+    <figure class="pot">
+      <div class="pot__legend">
+        <p class="leg">
+          <span class="leg__swatch leg__swatch--players" aria-hidden="true"></span>
+          <span class="leg__v">{toPlayers} <Usdc /></span>
+          <span class="leg__k">back to players</span>
+        </p>
+        <p class="leg leg--burn">
+          <span class="leg__swatch leg__swatch--burn" aria-hidden="true"></span>
+          <span class="leg__v">{commission} <Usdc /></span>
+          <span class="leg__k">bought back &amp; burned</span>
+        </p>
+      </div>
+
+      <div
+        class="bar"
+        role="img"
+        aria-label={`Of an ${POT} USDC pot, ${toPlayers} USDC (${playerPct}%) is paid back to players and ${commission} USDC (${COMMISSION_PCT}%) buys token that is burned.`}
+      >
+        <span class="bar__slice bar__slice--players" style={`--w:${playerPct}%`}>
+          <span class="bar__pct">{playerPct}%</span>
+        </span>
+        <span class="bar__slice bar__slice--burn" style={`--w:${COMMISSION_PCT}%`}>
+          <span class="bar__pct">{COMMISSION_PCT}%</span>
+        </span>
+      </div>
+
+      <figcaption class="pot__cap">
+        One {TABLE_STAKE} <Usdc /> table · {PLAYERS} players · {POT} <Usdc /> in the pot
+      </figcaption>
+    </figure>
+
+    <!-- What happens to the gold slice, in three beats. -->
+    <ol class="chain">
+      {chain.map((c) => (
+        <li class="beat">
+          <span class="beat__dot" aria-hidden="true"></span>
+          <p class="beat__v"><T text={c.v} /></p>
+          <div class="beat__body">
+            <h3 class="beat__t">{c.t}</h3>
+            <p class="beat__x">{c.x}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    {BURN_WALLET ? (
+      <p class="note">
+        Buyback wallet
+        <a class="note__addr" href={`https://solscan.io/account/${BURN_WALLET}`} rel="noopener" target="_blank">{BURN_WALLET}</a>
+        {BURN_COUNTER && <span class="note__sep">·</span>}
+        {BURN_COUNTER && <span>{BURN_COUNTER} tokens burned to date</span>}
+      </p>
+    ) : (
+      <p class="note">
+        The burn counter and the buyback wallet go public when the token ships —
+        both verifiable on-chain, from the very first match.
+      </p>
+    )}
+  </div>
+</section>
+
+<style>
+  /* Deeper than the rest of the blue family so white body copy clears 4.5:1
+     and the gold clears 3:1 on the large type. Same hue, same section. */
+  .token{ background: var(--sky); }
+  .token__lede{ margin-top: 18px; color: rgba(255,255,255,.88); }
+
+  /* ============================================================
+     THE POT — one bar, drawn to scale.
+     Same material as .btn--gold: top highlight, bottom shade, glossy face.
+     ============================================================ */
+
+  .pot{ margin: clamp(34px, 5vw, 58px) 0 clamp(30px, 4vw, 46px); }
+
+  .pot__legend{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .leg{ display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 9px; }
+  .leg--burn{ text-align: right; justify-content: flex-end; }
+  .leg__swatch{
+    align-self: center;
+    width: 12px; height: 12px;
+    border-radius: 4px;
+    flex: none;
+  }
+  .leg__swatch--players{ background: rgba(255,255,255,.55); }
+  .leg__swatch--burn{ background: var(--gold); }
+  .leg__v{ font-size: clamp(19px, 2.2vw, 26px); font-weight: 900; letter-spacing: -.4px; }
+  .leg--burn .leg__v{ color: var(--gold-lite); }
+  .leg__k{ font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,.88); }
+
+  .bar{
+    display: flex;
+    height: clamp(54px, 6.4vw, 78px);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 3px solid rgba(255,255,255,.9);
+    background: rgba(12,32,78,.35);
+    box-shadow: 0 10px 28px rgba(10,30,80,.3);
+  }
+  .bar__slice{
+    flex: 0 0 var(--w);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    font-size: clamp(14px, 1.5vw, 18px);
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+  }
+  .bar__slice--players{
+    background: linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,.13));
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.45), inset 0 -3px 0 rgba(0,0,0,.14);
+    color: #fff;
+  }
+  .bar__slice--burn{
+    background: linear-gradient(180deg, var(--gold-lite) 0%, var(--gold) 52%, var(--gold-deep) 100%);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.6), inset 0 -3px 0 rgba(170,100,0,.26);
+    color: var(--violet-ink);
+  }
+
+  .pot__cap{
+    margin-top: 13px;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,.88);
+  }
+
+  /* ============================================================
+     THE CHAIN — vertical, so it reads the same on every screen.
+     ============================================================ */
+
+  .chain{
+    --pad:  clamp(20px, 2.6vw, 30px);
+    --dot:  18px;
+    /* dot centre = top padding + the dot's own 5px nudge + half the dot */
+    --stop: calc(var(--pad) + 5px + (var(--dot) / 2));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .beat{
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--dot) minmax(150px, 224px) 1fr;
+    gap: clamp(14px, 2.4vw, 30px);
+    align-items: start;
+    padding: var(--pad) 0;
+  }
+  .beat + .beat{ border-top: 1px solid rgba(255,255,255,.2); }
+
+  /* The rail linking the dots. Clipped at both ends so it starts and stops
+     dead on the first and last dot. */
+  .beat::before{
+    content: '';
+    position: absolute;
+    left: calc(var(--dot) / 2 - 1px);
+    top: 0; bottom: 0;
+    width: 2px;
+    background: rgba(255,255,255,.32);
+  }
+  .beat:first-child::before{ top: var(--stop); }
+  .beat:last-child::before{ bottom: auto; height: var(--stop); }
+
+  .beat__dot{
+    position: relative;
+    z-index: 1;
+    width: var(--dot); height: var(--dot);
+    margin-top: 5px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, var(--gold-lite), var(--gold-deep));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 0 0 4px var(--sky);
+  }
+  .beat__v{
+    font-size: clamp(30px, 4.2vw, 46px);
+    font-weight: 900;
+    letter-spacing: -1.2px;
+    line-height: 1;
+    white-space: nowrap;   /* "8 USDC" must never break across two lines */
+    text-align: right;     /* the three numbers share one gutter, not a ragged edge */
+    color: var(--gold);
+    font-variant-numeric: tabular-nums;
+  }
+  .beat__t{
+    font-size: clamp(18px, 2vw, 23px);
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .beat__x{
+    font-size: 14.5px;
+    line-height: 1.6;
+    font-weight: 500;
+    color: rgba(255,255,255,.88);
+    max-width: 58ch;
+  }
+
+  /* ============================================================
+     QUIET FOOTER — no empty "—" placeholders, just the plain fact.
+     ============================================================ */
+
+  .note{
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: clamp(22px, 3vw, 34px);
+    padding: 15px clamp(16px, 2vw, 22px);
+    border: 1px solid rgba(255,255,255,.24);
+    border-radius: 14px;
+    background: rgba(255,255,255,.08);
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.55;
+    color: rgba(255,255,255,.88);
+  }
+  .note__addr{
+    font-weight: 800;
+    word-break: break-all;
+    /* Small text, so it needs the full 4.5:1 — gold-lite lands at 4.49. */
+    color: #FFE9A0;
+    border-bottom: 1px solid rgba(255,233,160,.45);
+  }
+  .note__addr:hover{ color: #fff; border-bottom-color: #fff; }
+  .note__addr:focus-visible{ outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 3px; }
+  .note__sep{ color: rgba(255,255,255,.5); }
+
+  /* ============================================================
+     RESPONSIVE
+     ============================================================ */
+
+  @media (max-width: 860px){
+    .beat{ grid-template-columns: var(--dot) 1fr; }
+    .beat__v{ grid-column: 2; margin-bottom: 10px; text-align: left; }
+    .beat__body{ grid-column: 2; }
+  }
+
+  /* Below this the forced break strands "tokens" on a line of its own. */
+  @media (max-width: 720px){
+    .h2__brk{ display: none; }
+  }
+
+  @media (max-width: 620px){
+    .pot__legend{ display: grid; grid-template-columns: 1fr; gap: 8px; }
+    .leg, .leg--burn{ justify-content: flex-start; text-align: left; }
+    /* At this width the 10% slice is ~30px — the legend carries the numbers. */
+    .bar__slice--burn .bar__pct{ display: none; }
+  }
+</style>

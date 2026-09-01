@@ -1,0 +1,43 @@
+---
+/** Diagonal cut between two sections.
+ *  Sits just above the section it belongs to and bites into the one before,
+ *  filled with the current section's colour and edged with a cream line. */
+interface Props {
+  color?: string;
+  dir?: 'right' | 'left';
+  height?: string;
+}
+const {
+  color = 'var(--violet)',
+  dir = 'right',
+  height = 'clamp(34px, 4.4vw, 74px)',
+} = Astro.props;
+
+const fill = dir === 'right' ? 'M0,100 L1440,0 L1440,100 Z' : 'M0,0 L1440,100 L0,100 Z';
+const edge = dir === 'right' ? 'M0,100 L1440,0'              : 'M0,0 L1440,100';
+---
+<svg
+  class="dvd"
+  style={`--dvd-h:${height}; color:${color}`}
+  viewBox="0 0 1440 100"
+  preserveAspectRatio="none"
+  aria-hidden="true"
+>
+  <path d={fill} fill="currentColor" />
+  <path d={edge} fill="none" stroke="var(--cream)" stroke-width="7" vector-effect="non-scaling-stroke" />
+</svg>
+
+<style>
+  .dvd{
+    position: absolute;
+    left: 0;
+    /* 1 px de recouvrement : sans lui, la ligne d'anti-crénelage du bas du SVG
+       laisse transparaître la section précédente et dessine un rectangle. */
+    bottom: calc(100% - 1px);
+    width: 100%;
+    height: calc(var(--dvd-h) + 1px);
+    display: block;
+    z-index: 3;
+    pointer-events: none;
+  }
+</style>

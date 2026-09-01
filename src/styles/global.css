@@ -1,0 +1,203 @@
+/* ============================================================
+   BABY GUY — foundation: palette, type, buttons, sections
+   ============================================================ */
+
+:root{
+  /* --- Palette: soft violets and blues, gold for the action --- */
+  --cream:        #FBF6FF;   /* the line between two sections   */
+  --violet-ink:   #2A1E5E;   /* footer, deepest tone            */
+  --violet-900:   #34266F;   /* trailer, FAQ                    */
+  --violet-800:   #3E2E8C;
+  --violet:       #6E52D4;   /* main purple sections            */
+  --violet-lite:  #8B6BE8;
+  --sky:          #3364B8;   /* token section — deepened for WCAG AA */
+  --sky-lite:     #5288D6;
+  --gold:         #FFC93C;
+  --gold-lite:    #FFE27A;
+  --gold-deep:    #F0A017;
+  --pink:         #FF7FB0;
+  --pink-lite:    #FFA3C8;
+  --pink-deep:    #F0538F;
+
+  --surface:      rgba(255,255,255,.12);
+  --surface-2:    rgba(255,255,255,.06);
+  --line:         rgba(255,255,255,.24);
+  --text:         #ffffff;
+  --muted:        rgba(255,255,255,.78);
+
+  --header-h:     100px;
+  --header-h-sm:  64px;
+  --curve-h:      34px;
+  --maxw:         1240px;
+  --radius:       20px;
+}
+
+*{ box-sizing: border-box; }
+
+html{ scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body{
+  margin: 0;
+  background: var(--cream);
+  color: var(--text);
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a{ color: inherit; text-decoration: none; }
+img, video{ max-width: 100%; display: block; }
+
+h1,h2,h3{ margin: 0; line-height: 1.05; font-weight: 900; letter-spacing: -.5px; }
+p{ margin: 0; }
+
+/* --- Section rhythm --- */
+.section{
+  position: relative;
+  padding: clamp(62px, 9vw, 120px) 0 clamp(66px, 9.5vw, 126px);
+}
+.wrap{ width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(18px, 4vw, 32px); position: relative; z-index: 1; }
+
+.eyebrow{
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.h2{ font-size: clamp(30px, 5vw, 52px); }
+.lede{
+  color: var(--muted);
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.55;
+  font-weight: 500;
+  max-width: 62ch;
+}
+
+/* ============================================================
+   BUTTONS
+   Gold is the colour of the action: one per screen, never two.
+   ============================================================ */
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+}
+.btn:active{ transform: translateY(2px); }
+
+.btn--gold{
+  color: var(--violet-ink);
+  background: linear-gradient(180deg, var(--gold-lite) 0%, var(--gold) 52%, var(--gold-deep) 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.6),
+    inset 0 -3px 0 rgba(170,100,0,.26),
+    0 6px 18px rgba(120,70,0,.24);
+}
+.btn--gold:hover{
+  filter: brightness(1.05);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.65),
+    inset 0 -3px 0 rgba(170,100,0,.26),
+    0 10px 26px rgba(120,70,0,.3);
+}
+
+.btn--sm{ font-size: clamp(12px, .95vw, 14px); letter-spacing: .6px; padding: 14px 24px; }
+.btn--md{ font-size: 15px; letter-spacing: .8px; padding: 17px 32px; }
+.btn--lg{
+  font-size: clamp(16px, 2vw, 22px);
+  letter-spacing: 1px;
+  padding: clamp(16px, 1.8vw, 22px) clamp(28px, 4vw, 52px);
+  border: 3px solid rgba(255,255,255,.9);
+  outline: 4px solid rgba(255,201,60,.3);
+}
+
+.btn--ghost{
+  background: transparent;
+  color: #fff;
+  border: 1.6px solid rgba(255,255,255,.4);
+}
+.btn--ghost:hover{ border-color: #fff; background: rgba(255,255,255,.12); }
+
+/* Quiet link */
+.link-quiet{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  border-bottom: 1px solid transparent;
+  transition: color .16s ease, border-color .16s ease;
+}
+.link-quiet:hover{ color: #fff; border-bottom-color: var(--gold); }
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+
+.field{
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 999px;
+  border: 1.6px solid rgba(255,255,255,.3);
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+}
+.field::placeholder{ color: rgba(255,255,255,.6); font-weight: 500; }
+.field:focus{ outline: none; border-color: var(--gold); background: rgba(255,255,255,.2); }
+
+.form-note{ font-size: 13px; color: var(--muted); line-height: 1.5; }
+.form-msg{
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.12);
+}
+.form-msg[hidden]{ display: none; }
+.form-msg--ok{ border-color: rgba(255,201,60,.6); color: var(--gold); }
+
+/* ============================================================
+   LOOPING VIDEO
+   ============================================================ */
+
+.loopvid{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--violet-900);
+}
+
+/* Reduced motion: the loop is replaced by its poster (the script simply
+   never attaches the source, so the poster stays on screen). */
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *{ animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+/* ============================================================
+   MISC
+   ============================================================ */
+
+.sr-only{
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}

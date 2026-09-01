@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Trailer from '../components/Trailer.astro';
+import HowToPlay from '../components/HowToPlay.astro';
+import WhitelistBar from '../components/WhitelistBar.astro';
+import Token from '../components/Token.astro';
+import Whitelist from '../components/Whitelist.astro';
+import Faq from '../components/Faq.astro';
+import Footer from '../components/Footer.astro';
+---
+<Layout
+  title="Baby Guy — Bet. Run. Cash out."
+  description="16-player battle royale with real USDC stakes. Whitelist open: 200 spots, 5 USDC free when you join."
+>
+  <Header />
+  <main>
+    <Hero />          {/* 1 */}
+    <Trailer />       {/* 2 */}
+    <HowToPlay />     {/* 3 */}
+    <WhitelistBar />  {/* 4 */}
+    <Token />         {/* 5 */}
+    <Whitelist />     {/* 6 */}
+    <Faq />
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,268 @@
+---
+import Divider from './Divider.astro';
+
+// Section 2 — the trailer explains the game faster than any paragraph,
+// so it stays directly under the hero. Full frame, never cropped:
+// click it to watch it fullscreen with sound.
+---
+<section class="trailer" id="trailer">
+  <div class="trailer__frame" id="trailerFrame">
+    <video
+      id="trailerVideo"
+      class="trailer__video"
+      src="/videos/trailer.mp4"
+      poster="/posters/trailer.jpg"
+      muted
+      loop
+      playsinline
+      autoplay
+      preload="metadata"
+      aria-label="Baby Guy trailer"
+    ></video>
+
+    <div class="trailer__ui">
+      <button class="tbtn" id="soundBtn" type="button" aria-pressed="false">
+        <svg class="ico ico--off" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M4 9v6h4l5 5V4L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Z"/>
+          <path stroke="currentColor" stroke-width="2" d="m3 3 18 18"/>
+        </svg>
+        <svg class="ico ico--on" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M4 9v6h4l5 5V4L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4Zm3.3-6.4-1.4 1.4a7 7 0 0 1 0 10l1.4 1.4a9 9 0 0 0 0-12.8Z"/>
+        </svg>
+        <span id="soundTxt">Turn on sound</span>
+      </button>
+
+      <button class="tbtn" id="fsBtn" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M4 9V4h5v2H6v3H4Zm11-5h5v5h-2V6h-3V4ZM4 15h2v3h3v2H4v-5Zm14 0h2v5h-5v-2h3v-3Z"/>
+        </svg>
+        <span>Watch full video</span>
+      </button>
+    </div>
+
+    <button class="trailer__hit" id="fsHit" type="button" aria-label="Watch the full trailer"></button>
+  </div>
+
+  <!-- Le trait crème posé exactement sur le bord biseauté de la vidéo. -->
+  <svg class="trailer__edge" viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,0 L1440,100" fill="none" stroke="var(--cream)" stroke-width="7" vector-effect="non-scaling-stroke" />
+  </svg>
+
+  <!-- Pop-up : la vidéo entière, avec le son et les contrôles. -->
+  <dialog class="lb" id="lb" aria-label="Baby Guy trailer">
+    <div class="lb__inner">
+      <button class="lb__close" id="lbClose" type="button" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/>
+        </svg>
+      </button>
+      <video class="lb__video" id="lbVideo" src="/videos/trailer.mp4" poster="/posters/trailer.jpg"
+             controls playsinline preload="none"></video>
+    </div>
+  </dialog>
+</section>
+
+<style>
+    /* Pleine largeur : la vidéo EST la section. Elle remonte de la hauteur de
+     la coupe et son propre bord est biseauté, pour qu'aucune bande de couleur
+     ne s'intercale entre le trait et l'image. */
+  .trailer{
+    --cut: clamp(34px, 4.4vw, 74px);
+    position: relative;
+    z-index: 2;
+    margin-top: calc(-1 * var(--cut));
+    background: transparent;
+    padding: 0;
+  }
+
+  .trailer__edge{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--cut);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .trailer__frame{
+    position: relative;
+    width: 100%;
+    background: #0E0A26;
+    line-height: 0;
+    clip-path: polygon(0 0, 100% var(--cut), 100% 100%, 0 100%);
+  }
+
+  /* Cadre entier, jamais rogné. */
+  .trailer__video{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Toute la surface est cliquable, sauf les boutons qui passent au-dessus. */
+  .trailer__hit{
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    cursor: zoom-in;
+  }
+
+  .trailer__ui{
+    position: absolute;
+    z-index: 2;
+    right: clamp(14px, 3vw, 32px);
+    bottom: clamp(58px, 7vw, 104px);   /* au-dessus de la coupe diagonale du bas */
+    display: flex;
+    gap: 10px;
+  }
+
+  .tbtn{
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 18px;
+    border: 1.6px solid rgba(255,255,255,.4);
+    border-radius: 999px;
+    background: rgba(20,12,50,.66);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background .16s ease, border-color .16s ease, transform .16s ease;
+  }
+  .tbtn:hover{ background: rgba(20,12,50,.88); border-color: #fff; transform: translateY(-2px); }
+
+  .ico--on{ display: none; }
+  #soundBtn[aria-pressed="true"] .ico--on{ display: block; }
+  #soundBtn[aria-pressed="true"] .ico--off{ display: none; }
+
+  /* ---- Pop-up ---- */
+  .lb{
+    border: 0;
+    padding: 0;
+    background: transparent;
+    width: min(1280px, 92vw);
+    max-width: none;
+    max-height: none;
+    overflow: visible;
+    color: #fff;
+  }
+  .lb::backdrop{
+    background: rgba(14,8,38,.88);
+    backdrop-filter: blur(6px);
+  }
+  .lb[open]{ animation: pop .22s ease both; }
+  @keyframes pop{ from{ opacity: 0; transform: scale(.97); } to{ opacity: 1; transform: scale(1); } }
+
+  .lb__inner{ position: relative; }
+  .lb__video{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-height: 84vh;
+    object-fit: contain;
+    display: block;
+    border-radius: 16px;
+    background: #000;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6);
+  }
+  .lb__close{
+    position: absolute;
+    top: -52px;
+    right: 0;
+    width: 40px; height: 40px;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    border: 1.6px solid rgba(255,255,255,.4);
+    background: rgba(255,255,255,.1);
+    color: #fff;
+    cursor: pointer;
+    transition: background .16s ease, border-color .16s ease;
+  }
+  .lb__close:hover{ background: rgba(255,255,255,.24); border-color: #fff; }
+
+  @media (max-width: 640px){
+    .lb__close{ top: -46px; }
+  }
+
+  @media (max-width: 640px){
+    .tbtn{ padding: 10px 13px; font-size: 11px; gap: 7px; }
+    .tbtn svg{ width: 15px; height: 15px; }
+  }
+</style>
+
+<script>
+  const frame = document.getElementById('trailerFrame') as HTMLElement | null;
+  const v = document.getElementById('trailerVideo') as HTMLVideoElement | null;
+  const soundBtn = document.getElementById('soundBtn');
+  const soundTxt = document.getElementById('soundTxt');
+  const fsBtn = document.getElementById('fsBtn');
+  const hit = document.getElementById('fsHit');
+
+  if (frame && v && soundBtn && soundTxt && fsBtn && hit) {
+    // Reduced motion: no autoplay, the poster is enough.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.autoplay = false;
+      v.removeAttribute('autoplay');
+      v.pause();
+      v.controls = true;
+    }
+
+    function setSound(on: boolean) {
+      v!.muted = !on;
+      soundBtn!.setAttribute('aria-pressed', String(on));
+      soundTxt!.textContent = on ? 'Mute' : 'Turn on sound';
+      if (on) v!.play().catch(() => {});
+    }
+
+    soundBtn.addEventListener('click', () => setSound(v.muted));
+
+    // ---- Pop-up : la vidéo entière, reprise là où la boucle en est ----
+    const lb = document.getElementById('lb') as HTMLDialogElement | null;
+    const lbVideo = document.getElementById('lbVideo') as HTMLVideoElement | null;
+    const lbClose = document.getElementById('lbClose');
+
+    function openLightbox() {
+      if (!lb || !lbVideo) return;
+      v!.pause();
+      lbVideo.currentTime = v!.currentTime || 0;
+      lbVideo.muted = false;
+      lb.showModal();
+      lbVideo.play().catch(() => { lbVideo.muted = true; lbVideo.play().catch(() => {}); });
+    }
+
+    function closeLightbox() {
+      if (!lb || !lbVideo) return;
+      lbVideo.pause();
+      if (lb.open) lb.close();
+      setSound(false);              // la boucle repart muette
+      v!.play().catch(() => {});
+    }
+
+    hit.addEventListener('click', openLightbox);
+    fsBtn.addEventListener('click', openLightbox);
+    lbClose?.addEventListener('click', closeLightbox);
+    lb?.addEventListener('close', closeLightbox);
+    // clic sur le fond : le dialog occupe tout l'écran, seul .lb__inner est la vidéo
+    lb?.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+
+    // Sound does not keep running once the video leaves the screen.
+    new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) { if (!lb?.open) v.play().catch(() => {}); }
+        else { v.pause(); }
+      }
+    }, { threshold: 0.25 }).observe(v);
+  }
+</script>

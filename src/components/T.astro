@@ -1,0 +1,14 @@
+---
+import Usdc from './Usdc.astro';
+
+/** Renders a copy string, swapping every `{USDC}` placeholder for the mark. */
+interface Props { text: string; }
+const { text } = Astro.props;
+const parts = text.split('{USDC}');
+---
+{parts.map((part, i) => (
+  <Fragment>
+    {part}
+    {i < parts.length - 1 && <Usdc />}
+  </Fragment>
+))}

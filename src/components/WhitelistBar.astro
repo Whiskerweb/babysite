@@ -1,0 +1,53 @@
+---
+import Divider from './Divider.astro';
+import Usdc from './Usdc.astro';
+
+// Section 4 — one line, one field, one button. Nothing else.
+---
+<section class="bar">
+  <Divider dir="left" color="var(--pink)" />
+  <div class="wrap bar__inner">
+    <p class="bar__line"><strong>5 <Usdc /> free</strong> when you join the whitelist.</p>
+
+    <form class="bar__form" data-wl-form>
+      <label class="sr-only" for="wl-bar-email">Email address</label>
+      <input class="field" id="wl-bar-email" type="email" name="email" required
+             placeholder="you@email.com" autocomplete="email" />
+      <button class="btn btn--gold btn--md" type="submit">Claim my spot</button>
+    </form>
+  </div>
+  <p class="bar__msg form-msg" data-wl-msg hidden></p>
+</section>
+
+<style>
+  .bar{
+    position: relative;
+    background: var(--pink);
+    padding: clamp(56px, 7vw, 98px) 0 clamp(56px, 7vw, 98px);
+  }
+  .bar__inner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(16px, 3vw, 40px);
+    flex-wrap: wrap;
+  }
+  .bar__line{
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 700;
+    color: rgba(255,255,255,.92);
+  }
+  .bar__line strong{ font-weight: 900; color: #fff; }
+  .bar__form{ display: flex; gap: 10px; flex: 1 1 380px; max-width: 520px; }
+  .bar__form .field{
+    background: rgba(0,0,0,.22);
+    border-color: rgba(255,255,255,.4);
+  }
+  .bar__form .field::placeholder{ color: rgba(255,255,255,.6); }
+  .bar__msg{ max-width: var(--maxw); margin: 14px auto 0; padding-inline: clamp(18px, 4vw, 32px); background: rgba(0,0,0,.22); border-color: rgba(255,255,255,.35); }
+
+  @media (max-width: 720px){
+    .bar__form{ flex-direction: column; }
+    .bar__form .btn{ width: 100%; }
+  }
+</style>

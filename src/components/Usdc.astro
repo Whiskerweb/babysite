@@ -1,0 +1,27 @@
+---
+/** The USDC mark, sized to the text it sits in. */
+interface Props { size?: string; }
+const { size } = Astro.props;
+---
+<img
+  class="usdc"
+  src="/img/usdc.png"
+  alt="USDC"
+  width="256"
+  height="256"
+  loading="lazy"
+  decoding="async"
+  style={size ? `--usdc-size:${size}` : undefined}
+/><style>
+  .usdc{
+    display: inline-block;
+    width: var(--usdc-size, .92em);
+    height: var(--usdc-size, .92em);
+    vertical-align: -.17em;
+    margin-inline: .12em .03em;
+    /* Le bleu USDC sur un fond violet ou bleu manque de détachement :
+       un liseré clair le fait ressortir sans toucher au logo. */
+    border-radius: 50%;
+    box-shadow: 0 0 0 calc(var(--usdc-size, .92em) * .06) rgba(255,255,255,.9);
+  }
+</style>

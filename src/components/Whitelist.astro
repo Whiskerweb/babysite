@@ -1,0 +1,280 @@
+---
+import Divider from './Divider.astro';
+import Usdc from './Usdc.astro';
+import T from './T.astro';
+import {
+  WHITELIST_PLACES, WHITELIST_GIFT, WITHDRAW_MIN, TABLE_STAKE, FORM_ENDPOINT,
+} from '../data/site';
+
+// The offer, stated as a ledger. The point the old copy buried: 5 USDC is not
+// a round number picked for looks, it is exactly one table.
+const ledger = [
+  {
+    k: 'You get',
+    v: `${WHITELIST_GIFT}`,
+    unit: true,
+    x: `Credited to your balance at launch — exactly one ${TABLE_STAKE}{USDC} table.`,
+  },
+  {
+    k: 'You pay',
+    v: 'nothing',
+    unit: false,
+    x: 'No card, no deposit, no wallet needed to join the list.',
+  },
+  {
+    k: 'You withdraw from',
+    v: `${WITHDRAW_MIN}`,
+    unit: true,
+    x: 'The threshold, stated up front. Below it, the balance stays in play.',
+  },
+];
+---
+<section class="section wl" id="whitelist">
+  <Divider dir="left" color="var(--violet)" />
+  <div class="wrap wl__grid">
+
+    <div class="wl__offer-col">
+      <p class="eyebrow">Whitelist</p>
+
+      <h2 class="wl__offer">
+        <span class="wl__amount">{WHITELIST_GIFT}<Usdc size=".68em" /></span>
+        <span class="wl__offer-txt">free when you join</span>
+      </h2>
+
+      <p class="wl__lead">
+        That is one full table. Your first match is already paid for.
+      </p>
+
+      <dl class="ledger">
+        {ledger.map((l) => (
+          <div class="ledger__row">
+            <dt class="ledger__k">{l.k}</dt>
+            <dd class="ledger__v">
+              <span class={`ledger__num ${l.unit ? '' : 'is-word'}`}>{l.v}{l.unit && <Usdc />}</span>
+              <span class="ledger__x"><T text={l.x} /></span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+
+      <p class="wl__scarce">
+        <span class="wl__dot" aria-hidden="true"></span>
+        <strong>{WHITELIST_PLACES} spots</strong> — not one more. Fixed number, updated by hand.
+      </p>
+    </div>
+
+    <div class="wl__form-col">
+      <form class="wl__form" data-wl-form>
+        <p class="wl__form-title">Claim your spot</p>
+
+        <div class="wl__row">
+          <label class="wl__label" for="wl-email">Email</label>
+          <input class="field" id="wl-email" type="email" name="email" required
+                 placeholder="you@email.com" autocomplete="email" />
+        </div>
+
+        <div class="wl__row">
+          <label class="wl__label" for="wl-wallet">Wallet <span class="wl__opt">— optional</span></label>
+          <input class="field" id="wl-wallet" type="text" name="wallet"
+                 placeholder="Solana address, if you already have one" autocomplete="off" spellcheck="false" />
+        </div>
+
+        <button class="btn btn--gold btn--lg wl__submit" type="submit">Join the whitelist</button>
+
+        <p class="form-note">
+          One email, nothing else. No resale, no daily newsletter.
+          You can add your wallet later.
+        </p>
+      </form>
+
+      <p class="form-msg wl__msg" data-wl-msg hidden></p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .wl{
+    /* The glows stay centred: touching an edge would leave a seam where the
+       colour no longer matches the divider. */
+    background:
+      radial-gradient(900px 520px at 50% 46%, rgba(255,127,176,.30), transparent 60%),
+      radial-gradient(760px 420px at 50% 74%, rgba(255,201,60,.16), transparent 62%),
+      var(--violet);
+  }
+
+  /* Offer on the left, form on the right — the centred stack made the section
+     a full screen tall for two inputs. */
+  .wl__grid{
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+
+  .wl__offer{ display: flex; flex-direction: column; gap: 2px; margin-bottom: 18px; }
+  /* The coin aligns to the digit, not to the body text. */
+  .wl__amount :global(.usdc){ vertical-align: -.01em; margin-inline: .16em 0; }
+  .wl__amount{
+    font-size: clamp(62px, 9vw, 116px);
+    font-weight: 900;
+    letter-spacing: -4px;
+    line-height: .9;
+    color: var(--gold);
+    text-shadow: 0 8px 40px rgba(255,201,60,.28);
+  }
+  .wl__offer-txt{
+    font-size: clamp(16px, 2vw, 23px);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .wl__lead{
+    font-size: clamp(15px, 1.7vw, 18px);
+    font-weight: 600;
+    line-height: 1.55;
+    color: #fff;
+    max-width: 46ch;
+  }
+
+  /* --- The ledger: three lines, no prose to hunt through --- */
+  .ledger{ margin: clamp(24px, 3vw, 34px) 0 0; padding: 0; }
+  .ledger__row{
+    display: grid;
+    grid-template-columns: minmax(120px, 168px) 1fr;
+    gap: clamp(12px, 2vw, 24px);
+    align-items: baseline;
+    padding: clamp(14px, 1.8vw, 18px) 0;
+    border-top: 1px solid var(--line);
+  }
+  .ledger__row:last-child{ border-bottom: 1px solid var(--line); }
+  .ledger__k{
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.88);
+  }
+  .ledger__v{ margin: 0; display: flex; flex-direction: column; gap: 5px; }
+  .ledger__num{
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 900;
+    letter-spacing: -.8px;
+    line-height: 1;
+    color: var(--gold);
+  }
+  .ledger__num.is-word{ font-size: clamp(20px, 2.4vw, 26px); }
+  .ledger__x{
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.55;
+    color: rgba(255,255,255,.88);
+    max-width: 46ch;
+  }
+
+  .wl__scarce{
+    margin-top: clamp(22px, 3vw, 30px);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 20px;
+    border: 1px solid rgba(255,201,60,.45);
+    border-radius: 999px;
+    background: rgba(255,201,60,.1);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #fff;
+  }
+  .wl__scarce strong{ color: var(--gold-lite); font-weight: 900; white-space: nowrap; }
+  .wl__dot{
+    flex: none;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 4px rgba(255,201,60,.18);
+  }
+
+  /* --- The form, in a card of the same stock as the rest of the site --- */
+  .wl__form-col{ position: sticky; top: 96px; }
+  .wl__form{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: clamp(22px, 3vw, 34px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.04));
+    box-shadow: 0 18px 48px rgba(30,14,80,.28);
+  }
+  .wl__form-title{
+    font-size: clamp(19px, 2vw, 23px);
+    font-weight: 900;
+    letter-spacing: -.4px;
+    margin-bottom: 2px;
+  }
+  .wl__row{ display: flex; flex-direction: column; gap: 8px; }
+  .wl__label{
+    font-size: 12px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
+    color: rgba(255,255,255,.88);
+    padding-left: 4px;
+  }
+  .wl__opt{ font-weight: 600; letter-spacing: .4px; text-transform: none; }
+  .wl__form .form-note{ color: rgba(255,255,255,.88); }
+  .wl__submit{ width: 100%; margin-top: 8px; }
+  .wl__msg{ margin-top: 16px; width: 100%; }
+
+  @media (max-width: 900px){
+    .wl__grid{ grid-template-columns: 1fr; gap: clamp(30px, 6vw, 44px); }
+    .wl__form-col{ position: static; }
+    .ledger__x{ max-width: 60ch; }
+  }
+  @media (max-width: 480px){
+    .ledger__row{ grid-template-columns: 1fr; gap: 8px; }
+    /* The pill wraps to two lines at this width; a softer radius owns it. */
+    .wl__scarce{ align-items: flex-start; border-radius: 14px; line-height: 1.5; }
+    .wl__dot{ margin-top: 7px; }
+  }
+</style>
+
+<script define:vars={{ FORM_ENDPOINT }}>
+  // One behaviour for both forms on the page.
+  document.querySelectorAll('[data-wl-form]').forEach((form) => {
+    const msg = form.closest('section')?.querySelector('[data-wl-msg]');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!msg) return;
+
+      // No endpoint: say so, do not pretend to store anything.
+      if (!FORM_ENDPOINT) {
+        msg.hidden = false;
+        msg.classList.remove('form-msg--ok');
+        msg.textContent =
+          'Sign-ups open very soon — the form is not wired up yet, so nothing was sent. ' +
+          'Follow the X account to hear the moment it opens.';
+        return;
+      }
+
+      const data = new FormData(form);
+      try {
+        const res = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' },
+        });
+        msg.hidden = false;
+        if (res.ok) {
+          form.reset();
+          msg.classList.add('form-msg--ok');
+          msg.textContent = 'You are on the list. We will email you when it opens.';
+        } else {
+          msg.classList.remove('form-msg--ok');
+          msg.textContent = 'That did not go through. Try again in a moment.';
+        }
+      } catch {
+        msg.hidden = false;
+        msg.classList.remove('form-msg--ok');
+        msg.textContent = 'Could not reach the server. Check your connection and retry.';
+      }
+    });
+  });
+</script>

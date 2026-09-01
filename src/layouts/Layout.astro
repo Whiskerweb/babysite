@@ -1,0 +1,58 @@
+---
+import '../styles/global.css';
+
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="/img/hero-bg.jpg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#1b1030" />
+  <link rel="icon" href="/img/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <slot />
+
+  <script>
+    // ------------------------------------------------------------
+    //  Looping videos: loaded as they come into view, paused off screen.
+    //  prefers-reduced-motion: the source is never attached at all,
+    //  so the poster stands in as a still image.
+    // ------------------------------------------------------------
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function activate(video: HTMLVideoElement) {
+      if (video.dataset.ready) return;
+      const src = video.dataset.src;
+      if (!src) return;
+      video.src = src;
+      video.dataset.ready = '1';
+      video.play().catch(() => { /* poster stays visible */ });
+    }
+
+    if (!reduced) {
+      const vids = document.querySelectorAll<HTMLVideoElement>('video[data-src]');
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) { activate(v); v.play().catch(() => {}); }
+          else if (v.dataset.ready) { v.pause(); }
+        }
+      }, { rootMargin: '200px 0px' });
+      vids.forEach((v) => io.observe(v));
+    }
+  </script>
+</body>
+</html>
