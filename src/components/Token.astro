@@ -2,7 +2,7 @@
 import Divider from './Divider.astro';
 import T from './T.astro';
 import Usdc from './Usdc.astro';
-import { COMMISSION_PCT, TABLE_STAKE, PLAYERS, POT, BURN_COUNTER, BURN_WALLET } from '../data/site';
+import { COMMISSION_PCT, TABLE_STAKE, PLAYERS, POT, BURN_COUNTER, BURN_WALLET, TRACKER_URL, NETWORK } from '../data/site';
 
 // One table, one pot, two destinations. Everything below is derived so the
 // numbers can never drift from site.ts.
@@ -87,17 +87,41 @@ const chain = [
       ))}
     </ol>
 
-    {BURN_WALLET ? (
+    <!-- ============================================================
+         THE PROOF. Everything above is a claim — 10% of the pot, all of it
+         buys token, none of it comes back. This is where a reader gets to
+         check it instead of believing it, so it is the last thing in the
+         section and it is not a footnote.
+
+         Ghost, not gold: gold means "go and play", once per screen, and this
+         is the one link on the page that competes for the same click.
+         ============================================================ -->
+    <div class="proof">
+      <div class="proof__txt">
+        <p class="proof__t">Don't take our word for it.</p>
+        <p class="proof__x">
+          The game publishes everything it does on Solana, live and to everyone:
+          matches played, {NETWORK === 'devnet' ? 'test ' : ''}<Usdc /> staked, every
+          buyback, every burn, every transaction, and the treasury addresses with
+          their explorer links.
+        </p>
+      </div>
+
+      <a class="btn btn--ghost btn--md proof__cta" href={TRACKER_URL} rel="noopener" target="_blank">
+        See it on-chain
+        <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+                stroke-linejoin="round" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
+        </svg>
+      </a>
+    </div>
+
+    {BURN_WALLET && (
       <p class="note">
         Buyback wallet
         <a class="note__addr" href={`https://solscan.io/account/${BURN_WALLET}`} rel="noopener" target="_blank">{BURN_WALLET}</a>
         {BURN_COUNTER && <span class="note__sep">·</span>}
         {BURN_COUNTER && <span>{BURN_COUNTER} tokens burned to date</span>}
-      </p>
-    ) : (
-      <p class="note">
-        The burn counter and the buyback wallet go public when the token ships —
-        both verifiable on-chain, from the very first match.
       </p>
     )}
   </div>
@@ -245,6 +269,48 @@ const chain = [
   /* ============================================================
      QUIET FOOTER — no empty "—" placeholders, just the plain fact.
      ============================================================ */
+
+  /* ============================================================
+     THE PROOF — same stock as .note (hairline, 8% white), but it is a
+     destination and not a footnote, so it gets the width and a button.
+     ============================================================ */
+  .proof{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(18px, 3vw, 34px);
+    flex-wrap: wrap;
+    margin-top: clamp(28px, 3.6vw, 40px);
+    padding: clamp(20px, 2.6vw, 28px) clamp(20px, 2.6vw, 30px);
+    border: 1px solid rgba(255,255,255,.24);
+    border-radius: var(--radius);
+    background: rgba(255,255,255,.08);
+  }
+  .proof__txt{ flex: 1 1 420px; }
+  .proof__t{
+    font-size: clamp(17px, 1.9vw, 21px);
+    font-weight: 900;
+    letter-spacing: -.3px;
+    margin-bottom: 7px;
+  }
+  .proof__x{
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: rgba(255,255,255,.88);
+    max-width: 62ch;
+  }
+  .proof__cta{ flex: none; }
+  .proof__cta svg{ margin-left: -2px; }
+
+  @media (max-width: 640px){
+    .proof{ flex-direction: column; align-items: stretch; }
+    /* En colonne, `flex: 1 1 420px` cesse d'etre une largeur de base et devient
+       une HAUTEUR de base : le texte reservait 420 px et poussait le bouton tout
+       en bas d'un bloc aux trois quarts vide. */
+    .proof__txt{ flex: 0 1 auto; }
+    .proof__cta{ width: 100%; }
+  }
 
   .note{
     display: flex;

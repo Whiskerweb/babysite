@@ -21,7 +21,7 @@ npm run build    # static output in dist/
 | 2 | Trailer, full width, autoplay muted + sound toggle | `src/components/Trailer.astro` |
 | 3 | How it works + **the three formats** + prize table | `src/components/HowToPlay.astro`, `src/components/Formats.astro` |
 | 4 | Short play band | `src/components/PlayBar.astro` |
-| 5 | Token & burn | `src/components/Token.astro` |
+| 5 | Token & burn, ending on the on-chain proof | `src/components/Token.astro` |
 | 6 | Play — what you need, and the door | `src/components/Play.astro` |
 | — | FAQ (6 accordions) | `src/components/Faq.astro` |
 | — | Footer (18+, jurisdiction) | `src/components/Footer.astro` |
@@ -37,6 +37,7 @@ burger menu carries the play link too — on mobile it is the panel the visitor 
 | Constant | Now | What it does |
 |---|---|---|
 | `GAME_URL` | `https://play.babyguy.dev` | **Where every gold button goes.** Six links on the built page read it; there is no second place to change. |
+| `TRACKER_URL` | *derived* | The game's live on-chain page, `GAME_URL + /api/suivi` — never written out, so it cannot drift from `GAME_URL`. The `/api/` is not decorative: the backend that serves it is private on Fly and the game server relays `/api/…` to it, which is why `play.babyguy.dev/suivi` is a 404. Linked from the Token section and the footer. |
 | `PLAY_LABEL` | `'Play now'` | The words on those six buttons. |
 | `NETWORK` | `'devnet'` | Printed in the notice on the play section and in the FAQ. While this says `devnet` the page states plainly that the {USDC} in play is test {USDC} and worth nothing. **Change it only when the deployed backend actually leaves devnet** (`SOLANA_RESEAU` in the game repo's `deploy/fly/backend.toml`) — the two have to move together or the page lies. |
 | `TABLES` | `[2, 5, 10]` | The tables the server opens, read off the live game's `/etat`. A table named here that the server does not open sends a visitor to a queue that never fills. |

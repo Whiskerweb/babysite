@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import Divider from './Divider.astro';
-import { socials, navLinks, GAME_URL, PLAY_LABEL } from '../data/site';
+import { socials, navLinks, GAME_URL, PLAY_LABEL, TRACKER_URL } from '../data/site';
 const year = new Date().getFullYear();
 ---
 <footer class="ft">
@@ -16,6 +16,7 @@ const year = new Date().getFullYear();
       <nav class="ft__nav" aria-label="Footer">
         {navLinks.map((l) => <a href={l.href}>{l.label}</a>)}
         <a href={GAME_URL}>{PLAY_LABEL}</a>
+        <a href={TRACKER_URL} rel="noopener" target="_blank">On-chain proof</a>
       </nav>
 
       <div class="ft__socials">

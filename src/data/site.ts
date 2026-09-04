@@ -8,6 +8,15 @@
  *  the address we publish, and the only one written into the copy. */
 export const GAME_URL = 'https://play.babyguy.dev';
 
+/** The live on-chain page the game itself serves: players, matches, buybacks,
+ *  burns, every transaction, and the treasury addresses with their explorer links.
+ *
+ *  DERIVED from GAME_URL and never written out, because it is not a second site —
+ *  it is the game's own `/api/suivi`. The backend that holds it is PRIVATE on Fly
+ *  (no public port); the game server relays `/api/…` to it, which is why the path
+ *  carries `/api/` and why `play.babyguy.dev/suivi` is a 404. */
+export const TRACKER_URL = `${GAME_URL}/api/suivi`;
+
 /** The one action this page asks for. Stated once, used everywhere, so the
  *  header, the hero, the mid-page band and the closing section can never
  *  drift apart. */
@@ -127,7 +136,7 @@ export const faq = [
   },
   {
     q: 'Where does the commission go?',
-    a: `${COMMISSION_PCT}% of everything staked — and all of it goes the same way: it buys token back on the market, and every token bought back is burned. Nothing is kept.`,
+    a: `${COMMISSION_PCT}% of everything staked — and all of it goes the same way: it buys token back on the market, and every token bought back is burned. Nothing is kept. You do not have to take that on trust: the game publishes every buyback, every burn and every transaction as it happens, on its on-chain page, along with the treasury addresses.`,
   },
   {
     q: 'Can I play right now?',
