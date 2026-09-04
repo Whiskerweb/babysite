@@ -3,6 +3,10 @@ import '../styles/global.css';
 
 interface Props { title: string; description: string; }
 const { title, description } = Astro.props;
+
+// The page now has a real address, so it can name it. Without a canonical the
+// Vercel preview URLs and the apex both get indexed as separate pages.
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -13,8 +17,10 @@ const { title, description } = Astro.props;
   <meta name="description" content={description} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content="/img/hero-bg.jpg" />
+  <meta property="og:image" content={new URL('/img/hero-bg.jpg', Astro.site).href} />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <link rel="canonical" href={canonical} />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#1b1030" />
   <link rel="icon" href="/img/logo.png" />

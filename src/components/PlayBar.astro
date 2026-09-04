@@ -1,0 +1,46 @@
+---
+import Divider from './Divider.astro';
+import Usdc from './Usdc.astro';
+import { GAME_URL, PLAY_LABEL, TABLES } from '../data/site';
+
+// Section 4 — one line, one button. It used to be one line, one field and one
+// button: the field collected an email for a list. The game is up, so the band
+// asks for the only thing left to ask for.
+---
+<section class="bar">
+  <Divider dir="left" color="var(--pink)" />
+  <div class="wrap bar__inner">
+    <p class="bar__line">
+      <strong>{TABLES.join(' · ')} <Usdc /> tables</strong> — open right now, in your browser.
+    </p>
+
+    <a class="btn btn--gold btn--md bar__cta" href={GAME_URL}>{PLAY_LABEL}</a>
+  </div>
+</section>
+
+<style>
+  .bar{
+    position: relative;
+    background: var(--pink);
+    padding: clamp(56px, 7vw, 98px) 0 clamp(56px, 7vw, 98px);
+  }
+  .bar__inner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(16px, 3vw, 40px);
+    flex-wrap: wrap;
+  }
+  .bar__line{
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 700;
+    color: rgba(255,255,255,.92);
+  }
+  .bar__line strong{ font-weight: 900; color: #fff; }
+  .bar__cta{ flex: none; }
+
+  @media (max-width: 720px){
+    .bar__inner{ flex-direction: column; align-items: stretch; text-align: center; }
+    .bar__cta{ width: 100%; }
+  }
+</style>

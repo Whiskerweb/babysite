@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import Divider from './Divider.astro';
-import { socials, navLinks } from '../data/site';
+import { socials, navLinks, GAME_URL, PLAY_LABEL } from '../data/site';
 const year = new Date().getFullYear();
 ---
 <footer class="ft">
@@ -15,7 +15,7 @@ const year = new Date().getFullYear();
 
       <nav class="ft__nav" aria-label="Footer">
         {navLinks.map((l) => <a href={l.href}>{l.label}</a>)}
-        <a href="#whitelist">Whitelist</a>
+        <a href={GAME_URL}>{PLAY_LABEL}</a>
       </nav>
 
       <div class="ft__socials">
@@ -27,14 +27,15 @@ const year = new Date().getFullYear();
 
     <div class="ft__legal">
       <p class="ft__warn">
-        <strong>18+ only.</strong> Baby Guy plays for real money: a match can cost you
-        your entire stake. Only ever stake what you can afford to lose.
+        <strong>18+ only.</strong> Baby Guy is played for stakes: a match can cost you
+        your entire stake. Only ever stake what you can afford to lose. The game
+        currently settles on Solana devnet — test USDC, no real money.
       </p>
       <p class="ft__warn">
         <strong>Jurisdiction restrictions.</strong> Paid matches are off limits wherever
         this kind of game is regulated or prohibited. The list of excluded countries is
-        published before deposits open, and a whitelist spot does not guarantee access
-        to the game.
+        published before real-money deposits open, and an account does not guarantee
+        access to them.
       </p>
       <p class="ft__copy">© {year} Baby Guy — No promise of profit. The numbers on this page describe a split rule, not a return.</p>
     </div>

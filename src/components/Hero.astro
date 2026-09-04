@@ -1,6 +1,6 @@
 ---
 import Usdc from './Usdc.astro';
-import { WHITELIST_PLACES } from '../data/site';
+import { GAME_URL, PLAY_LABEL } from '../data/site';
 ---
 <section class="hero" id="top">
   <div class="hero__scrim"></div>
@@ -9,11 +9,11 @@ import { WHITELIST_PLACES } from '../data/site';
     <h1 class="hero__title">Bet. Run. Cash out.</h1>
 
     <p class="hero__sub">
-      16-player battle royale, real <Usdc /> stakes, on-chain results.
-      The whitelist is open: {WHITELIST_PLACES} spots.
+      16-player battle royale, <Usdc /> stakes, on-chain results.
+      Playable right now, in the browser.
     </p>
 
-    <a class="btn btn--gold btn--lg" href="#whitelist">Join the whitelist</a>
+    <a class="btn btn--gold btn--lg" href={GAME_URL}>{PLAY_LABEL}</a>
 
     <a class="link-quiet hero__trailer" href="#trailer">
       <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>

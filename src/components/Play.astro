@@ -1,0 +1,231 @@
+---
+import Divider from './Divider.astro';
+import Usdc from './Usdc.astro';
+import T from './T.astro';
+import {
+  WITHDRAW_MIN, TABLES, GAME_URL, PLAY_LABEL, NETWORK,
+} from '../data/site';
+
+// The closing section. It was the whitelist form — an email in exchange for a
+// promise. The game is deployed, so the promise is gone and the page ends on
+// the door instead: what you need, what it costs, and one button.
+const ledger = [
+  {
+    k: 'You need',
+    v: 'an account',
+    unit: false,
+    x: 'An email and a password on the first screen. No card, no wallet extension, no download.',
+  },
+  {
+    k: 'You stake',
+    v: `${TABLES[0]}–${TABLES[TABLES.length - 1]}`,
+    unit: true,
+    x: 'Charged when the match starts, not when it ends. A match you never start costs nothing.',
+  },
+  {
+    k: 'You withdraw from',
+    v: `${WITHDRAW_MIN}`,
+    unit: true,
+    x: 'The threshold, stated up front. Below it, the balance stays in play.',
+  },
+];
+---
+<section class="section play" id="play">
+  <Divider dir="left" color="var(--violet)" />
+  <div class="wrap play__grid">
+
+    <div class="play__offer-col">
+      <p class="eyebrow">Play</p>
+
+      <h2 class="play__offer">
+        <span class="play__amount">{TABLES.join(' · ')}<Usdc size=".68em" /></span>
+        <span class="play__offer-txt">tables, open now</span>
+      </h2>
+
+      <p class="play__lead">
+        Duels start at two players, squads at four, the arena at sixteen.
+        It runs in the browser — nothing to install.
+      </p>
+
+      <dl class="ledger">
+        {ledger.map((l) => (
+          <div class="ledger__row">
+            <dt class="ledger__k">{l.k}</dt>
+            <dd class="ledger__v">
+              <span class={`ledger__num ${l.unit ? '' : 'is-word'}`}>{l.v}{l.unit && <Usdc />}</span>
+              <span class="ledger__x"><T text={l.x} /></span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+
+      <p class="play__note">
+        <span class="play__dot" aria-hidden="true"></span>
+        <span>
+          <strong>{NETWORK}</strong> — the <Usdc /> in play is test <Usdc /> from a public
+          faucet. It is worth nothing, and so is anything you win. Every mechanic runs
+          exactly as it will with real money, on a chain you can read.
+        </span>
+      </p>
+    </div>
+
+    <div class="play__cta-col">
+      <div class="play__card">
+        <p class="play__card-title">Ready?</p>
+
+        <p class="play__card-txt">
+          One button, then the game. You make your account on the first screen it shows you.
+        </p>
+
+        <a class="btn btn--gold btn--lg play__submit" href={GAME_URL}>{PLAY_LABEL}</a>
+
+        <p class="form-note">
+          Opens play.babyguy.dev. 18+ — a match can cost you your entire stake.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .play{
+    /* The glows stay centred: touching an edge would leave a seam where the
+       colour no longer matches the divider. */
+    background:
+      radial-gradient(900px 520px at 50% 46%, rgba(255,127,176,.30), transparent 60%),
+      radial-gradient(760px 420px at 50% 74%, rgba(255,201,60,.16), transparent 62%),
+      var(--violet);
+  }
+
+  /* Offer on the left, the door on the right — a centred stack made the section
+     a full screen tall for one button. */
+  .play__grid{
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+
+  .play__offer{ display: flex; flex-direction: column; gap: 2px; margin-bottom: 18px; }
+  /* The coin aligns to the digit, not to the body text. */
+  .play__amount :global(.usdc){ vertical-align: -.01em; margin-inline: .16em 0; }
+  .play__amount{
+    font-size: clamp(46px, 6.6vw, 88px);
+    font-weight: 900;
+    letter-spacing: -3px;
+    line-height: .95;
+    color: var(--gold);
+    text-shadow: 0 8px 40px rgba(255,201,60,.28);
+  }
+  .play__offer-txt{
+    font-size: clamp(16px, 2vw, 23px);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .play__lead{
+    font-size: clamp(15px, 1.7vw, 18px);
+    font-weight: 600;
+    line-height: 1.55;
+    color: #fff;
+    max-width: 46ch;
+  }
+
+  /* --- The ledger: three lines, no prose to hunt through --- */
+  .ledger{ margin: clamp(24px, 3vw, 34px) 0 0; padding: 0; }
+  .ledger__row{
+    display: grid;
+    grid-template-columns: minmax(120px, 168px) 1fr;
+    gap: clamp(12px, 2vw, 24px);
+    align-items: baseline;
+    padding: clamp(14px, 1.8vw, 18px) 0;
+    border-top: 1px solid var(--line);
+  }
+  .ledger__row:last-child{ border-bottom: 1px solid var(--line); }
+  .ledger__k{
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.88);
+  }
+  .ledger__v{ margin: 0; display: flex; flex-direction: column; gap: 5px; }
+  .ledger__num{
+    font-size: clamp(24px, 3vw, 32px);
+    font-weight: 900;
+    letter-spacing: -.8px;
+    line-height: 1;
+    color: var(--gold);
+  }
+  .ledger__num.is-word{ font-size: clamp(20px, 2.4vw, 26px); }
+  .ledger__x{
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.55;
+    color: rgba(255,255,255,.88);
+    max-width: 46ch;
+  }
+
+  /* The devnet notice. Same pill as the old scarcity line, and it says the one
+     thing a visitor about to stake needs to know before clicking. */
+  .play__note{
+    margin-top: clamp(22px, 3vw, 30px);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 13px 20px;
+    border: 1px solid rgba(255,201,60,.45);
+    border-radius: 14px;
+    background: rgba(255,201,60,.1);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.55;
+    color: #fff;
+    max-width: 56ch;
+  }
+  .play__note strong{ color: var(--gold-lite); font-weight: 900; text-transform: uppercase; letter-spacing: .6px; }
+  .play__dot{
+    flex: none;
+    margin-top: 7px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 4px rgba(255,201,60,.18);
+  }
+
+  /* --- The door, in a card of the same stock as the rest of the site --- */
+  .play__cta-col{ position: sticky; top: 96px; }
+  .play__card{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: clamp(22px, 3vw, 34px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.04));
+    box-shadow: 0 18px 48px rgba(30,14,80,.28);
+  }
+  .play__card-title{
+    font-size: clamp(19px, 2vw, 23px);
+    font-weight: 900;
+    letter-spacing: -.4px;
+    margin-bottom: 2px;
+  }
+  .play__card-txt{
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.55;
+    color: rgba(255,255,255,.88);
+  }
+  .play__card .form-note{ color: rgba(255,255,255,.88); }
+  .play__submit{ width: 100%; margin-top: 8px; text-align: center; }
+
+  @media (max-width: 900px){
+    .play__grid{ grid-template-columns: 1fr; gap: clamp(30px, 6vw, 44px); }
+    .play__cta-col{ position: static; }
+    .ledger__x{ max-width: 60ch; }
+  }
+  @media (max-width: 480px){
+    .ledger__row{ grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>

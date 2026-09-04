@@ -1,6 +1,6 @@
 ---
 import Icon from './Icon.astro';
-import { navLinks, socials } from '../data/site';
+import { navLinks, socials, GAME_URL, PLAY_LABEL } from '../data/site';
 ---
 <header class="hdr" id="hdr">
   <div class="hdr__bar">
@@ -22,7 +22,7 @@ import { navLinks, socials } from '../data/site';
           ))}
         </div>
 
-        <a class="btn btn--gold btn--sm" href="#whitelist">Join the whitelist</a>
+        <a class="btn btn--gold btn--sm" href={GAME_URL}>{PLAY_LABEL}</a>
 
         <button class="hdr__burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="mmenu">
           <span></span><span></span><span></span>
@@ -39,6 +39,7 @@ import { navLinks, socials } from '../data/site';
 
 <div class="mmenu" id="mmenu">
   {navLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+  <a class="mmenu__play" href={GAME_URL}>{PLAY_LABEL}</a>
   <div class="mmenu__socials">
     {socials.map((s) => (
       <a href={s.href} aria-label={s.name} rel="noopener"><Icon name={s.icon} /></a>
@@ -139,7 +140,7 @@ import { navLinks, socials } from '../data/site';
 
   /* ============================================================
      STICKY STATE: past 600 px only the logo and the
-     whitelist button remain.
+     play button remain.
      ============================================================ */
   .hdr.is-stuck{
     position: fixed;
@@ -176,6 +177,7 @@ import { navLinks, socials } from '../data/site';
     font-weight: 800; text-transform: uppercase; letter-spacing: .6px; font-size: 14px;
     border-bottom: 1px solid rgba(255,255,255,.08);
   }
+  .mmenu__play{ color: var(--gold); }
   .mmenu__socials{ display: flex; gap: 18px; padding-top: 16px; }
   .mmenu__socials a{ border: 0; padding: 0; }
   .mmenu__socials :global(svg){ width: 20px; height: 20px; }

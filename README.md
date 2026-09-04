@@ -1,6 +1,11 @@
 # Baby Guy — landing page
 
-One page, English, built with [Astro](https://astro.build). Single goal: whitelist sign-ups.
+One page, English, built with [Astro](https://astro.build). Single goal: send the visitor
+into the game. Every gold button on the page leads to `GAME_URL` — nothing else is asked
+of them, there is no form left to fill.
+
+Live at **https://babyguy.dev** (Vercel, static). The game it points at is
+**https://play.babyguy.dev** (Fly.io, `tumble-bg-jeu`).
 
 ```bash
 npm install
@@ -15,14 +20,15 @@ npm run build    # static output in dist/
 | 1 | Hero — Bet. Run. Cash out. | `src/components/Hero.astro` |
 | 2 | Trailer, full width, autoplay muted + sound toggle | `src/components/Trailer.astro` |
 | 3 | How it works + prize table + gameplay loop | `src/components/HowToPlay.astro` |
-| 4 | Short whitelist bar | `src/components/WhitelistBar.astro` |
+| 4 | Short play band | `src/components/PlayBar.astro` |
 | 5 | Token & burn | `src/components/Token.astro` |
-| 6 | Whitelist, full height | `src/components/Whitelist.astro` |
+| 6 | Play — what you need, and the door | `src/components/Play.astro` |
 | — | FAQ (6 accordions) | `src/components/Faq.astro` |
 | — | Footer (18+, jurisdiction) | `src/components/Footer.astro` |
 
 Header: logo · three anchors (The game / The token / FAQ) · five socials · one gold
-button. It becomes sticky past 600 px of scroll, reduced to logo + whitelist button.
+button. It becomes sticky past 600 px of scroll, reduced to logo + play button. The
+burger menu carries the play link too — on mobile it is the panel the visitor has open.
 
 ## Everything you will want to edit
 
@@ -30,8 +36,10 @@ button. It becomes sticky past 600 px of scroll, reduced to logo + whitelist but
 
 | Constant | Now | What it does |
 |---|---|---|
-| `FORM_ENDPOINT` | `''` | **Empty = the form sends nothing** and says so to the visitor. Paste a Formspree/Beehiiv/API URL to switch both forms on. |
-| `WHITELIST_PLACES` | `200` | Scarcity figure. Static, update by hand — no fake ticking counter. |
+| `GAME_URL` | `https://play.babyguy.dev` | **Where every gold button goes.** Six links on the built page read it; there is no second place to change. |
+| `PLAY_LABEL` | `'Play now'` | The words on those six buttons. |
+| `NETWORK` | `'devnet'` | Printed in the notice on the play section and in the FAQ. While this says `devnet` the page states plainly that the {USDC} in play is test {USDC} and worth nothing. **Change it only when the deployed backend actually leaves devnet** (`SOLANA_RESEAU` in the game repo's `deploy/fly/backend.toml`) — the two have to move together or the page lies. |
+| `TABLES` | `[2, 5, 10]` | The tables the server opens, read off the live game's `/etat`. A table named here that the server does not open sends a visitor to a queue that never fills. |
 | `BURN_PCT` | `'10'` | Share of every match bought back and burned = the whole commission. |
 | `BURN_COUNTER` | `null` | Burned-tokens counter. Shows `—` until you set it. |
 | `BURN_WALLET` | `null` | Buyback wallet address. Shows `—`, becomes a Solscan link once set. |
@@ -40,6 +48,13 @@ button. It becomes sticky past 600 px of scroll, reduced to logo + whitelist but
 Numbers used across the page (5 USDC table, 16 players, 10 % commission, 80 USDC pot,
 25 / 12.50 / 8.50 / 6.00 / stake back / nothing) all come from `payouts`, `TABLE_STAKE`,
 `PLAYERS`, `COMMISSION_PCT` and `POT` in the same file.
+
+> **`payouts` no longer matches the shipped game.** The table here promises a fixed
+> 25.00 for first place on a 5 USDC arena; the game draws the winner's gain on a wheel
+> and pays anywhere from 12.50 to 39.50 (expectation 23.37). The `×5` / `×2.5` column is
+> a multiplier, which the game itself is forbidden from showing a player. Fixing it is a
+> product decision — the real per-rank ranges are one command away:
+> `cd tools/feel-lab && node diag/economie.mjs` in the game repo.
 
 ## Media
 
@@ -62,6 +77,11 @@ IntersectionObserver (the trailer is the only eager one), paused off screen, and
 `assets/unused-posters/` holds the placeholder posters made for the trials and characters
 sections, which were removed from the page.
 
+## Deploying
+
+Vercel, static, from `main`. `npm run build` locally reproduces exactly what it serves —
+there is no server-side anything on this page.
+
 ## Design rules baked in
 
 - Pastel palette, all tokens in `src/styles/global.css`: cream `#FBF6FF` (the line
@@ -72,7 +92,11 @@ sections, which were removed from the page.
   own background), `dir` (`right` / `left`, alternate them) and `height`. Each cut is
   edged with a cream line. A section's vertical padding must stay above the cut height,
   otherwise content slides under the diagonal.
-- **One gold button per screen** — gold is the action colour. Everything else is ghost,
-  pink or plain text.
+- **One gold button per screen** — gold is the action colour, and it now means exactly
+  one thing: go and play. Everything else is ghost, pink or plain text.
 - Mobile first. The prize table scrolls horizontally inside its own container.
 - No promise of profit anywhere: the copy states a split rule, the footer says so too.
+- **The devnet status is stated, not buried.** The play section carries it in a gold
+  pill, the FAQ answers it outright, the footer repeats it. The page sends people to a
+  game that takes stakes; letting them assume those stakes are real money would be the
+  one dishonesty this page cannot afford.
