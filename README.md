@@ -19,7 +19,7 @@ npm run build    # static output in dist/
 |---|---------|------|
 | 1 | Hero — Bet. Run. Cash out. | `src/components/Hero.astro` |
 | 2 | Trailer, full width, autoplay muted + sound toggle | `src/components/Trailer.astro` |
-| 3 | How it works + prize table + gameplay loop | `src/components/HowToPlay.astro` |
+| 3 | How it works + **the three formats** + prize table | `src/components/HowToPlay.astro`, `src/components/Formats.astro` |
 | 4 | Short play band | `src/components/PlayBar.astro` |
 | 5 | Token & burn | `src/components/Token.astro` |
 | 6 | Play — what you need, and the door | `src/components/Play.astro` |
@@ -40,6 +40,7 @@ burger menu carries the play link too — on mobile it is the panel the visitor 
 | `PLAY_LABEL` | `'Play now'` | The words on those six buttons. |
 | `NETWORK` | `'devnet'` | Printed in the notice on the play section and in the FAQ. While this says `devnet` the page states plainly that the {USDC} in play is test {USDC} and worth nothing. **Change it only when the deployed backend actually leaves devnet** (`SOLANA_RESEAU` in the game repo's `deploy/fly/backend.toml`) — the two have to move together or the page lies. |
 | `TABLES` | `[2, 5, 10]` | The tables the server opens, read off the live game's `/etat`. A table named here that the server does not open sends a visitor to a queue that never fills. |
+| `formats` | 1v1 / Squad / Arena | The three formats, drawn as pips in `Formats.astro`. `cuts` is the game's own `MODES[mode].survivants` (`16 → 8 → 4 → 1`), so **its length is the round count** — 1, 2 and 3, which is why the page no longer says "3 rounds" outside the arena. `paid` is the count of non-bronze ranks from `grade(mode, rank)`: half the table, in all three. |
 | `BURN_PCT` | `'10'` | Share of every match bought back and burned = the whole commission. |
 | `BURN_COUNTER` | `null` | Burned-tokens counter. Shows `—` until you set it. |
 | `BURN_WALLET` | `null` | Buyback wallet address. Shows `—`, becomes a Solscan link once set. |
@@ -94,6 +95,10 @@ there is no server-side anything on this page.
   otherwise content slides under the diagonal.
 - **One gold button per screen** — gold is the action colour, and it now means exactly
   one thing: go and play. Everything else is ghost, pink or plain text.
+- **Three visual idioms in `#the-game`, and they do not borrow from each other.** The
+  three beats own the outlined numerals on a rail; the Token section owns the boxed
+  look; the formats block owns the pips. Each shows its data rather than stating it —
+  the prize chart is drawn to scale, the pips are one per seat.
 - Mobile first. The prize table scrolls horizontally inside its own container.
 - No promise of profit anywhere: the copy states a split rule, the footer says so too.
 - **The devnet status is stated, not buried.** The play section carries it in a gold
