@@ -2,6 +2,7 @@
 import Divider from './Divider.astro';
 import Usdc from './Usdc.astro';
 import T from './T.astro';
+import Formats from './Formats.astro';
 import { steps, payouts, TABLE_STAKE, PLAYERS, COMMISSION_PCT, POT } from '../data/site';
 
 // The chart is scaled to the biggest prize, so the bars stay honest if the
@@ -15,10 +16,13 @@ const rows = payouts.map((p) => {
 // Where the stake sits on that same scale — the break-even line.
 const stakeAt = (TABLE_STAKE / top) * 100;
 
+// The four numbers describe the ARENA — the biggest table, and the one the
+// chart above charts. Saying "16 players" flat would contradict the formats
+// block three inches higher.
 const facts = [
-  { v: `${TABLE_STAKE}`, unit: true,  k: 'per table' },
-  { v: `${PLAYERS}`,     unit: false, k: 'players' },
-  { v: '3',              unit: false, k: 'rounds, drawn at random' },
+  { v: `${TABLE_STAKE}`, unit: true,  k: 'per seat' },
+  { v: `${PLAYERS}`,     unit: false, k: 'seats in an arena' },
+  { v: '3',              unit: false, k: 'arena rounds, maps drawn at random' },
   { v: `${POT}`,         unit: true,  k: 'in the pot' },
 ];
 ---
@@ -39,13 +43,18 @@ const facts = [
       ))}
     </ol>
 
+    <!-- The three formats. It sits here and not lower: the chart underneath is
+         the arena's, and sixteen rows read as "the game" unless you have just
+         been told the arena is one table out of three. -->
+    <Formats />
+
     <!-- The prize table, drawn to scale. The stake line is the whole point:
          everything that reaches it walks away whole. -->
     <figure class="prize">
       <figcaption class="prize__head">
-        <h3 class="prize__title">What each place pays</h3>
+        <h3 class="prize__title">What each place pays in the arena</h3>
         <p class="prize__ctx">
-          On a {TABLE_STAKE}<Usdc /> table · {COMMISSION_PCT}% commission · {POT}<Usdc /> pot
+          {PLAYERS} players · on a {TABLE_STAKE}<Usdc /> table · {COMMISSION_PCT}% commission · {POT}<Usdc /> pot
         </p>
       </figcaption>
 

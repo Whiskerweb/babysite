@@ -1,0 +1,199 @@
+---
+import { formats } from '../data/site';
+
+// The three formats, inside the #the-game section — the prize chart below is the
+// ARENA alone, and a reader has to know that is one table out of three before
+// they read a sixteen-row chart.
+//
+// Third visual idiom on this page, deliberately: the steps own the outlined
+// numerals on a rail, the Token section owns the boxed look, so this one owns
+// the PIPS. One pip per seat, gold for a seat that finishes paid — the same
+// move as the prize chart, which draws the payouts to scale instead of listing
+// them. The pip blocks sit on a common baseline and grow upward, so the arena
+// being eight times the duel is something you see before you read it.
+---
+<div class="formats">
+  <div class="formats__head">
+    <h3 class="formats__title">Two, four, or sixteen.</h3>
+    <p class="formats__lede">
+      Three tables, one game. Same maps, same rules, same stakes — only the size
+      of the table changes. And whichever one you sit at,
+      <strong>half of it finishes paid.</strong>
+    </p>
+  </div>
+
+  <ul class="formats__list">
+    {formats.map((f) => (
+      <li class="format">
+        <p class="format__name">{f.name}</p>
+
+        <div class="format__pipbox">
+          <div class="format__pips" role="img"
+               aria-label={`${f.players} players, ${f.paid} of them finish paid`}>
+            {Array.from({ length: f.players }, (_, i) => (
+              <span class={`pip ${i < f.paid ? 'is-paid' : ''}`}></span>
+            ))}
+          </div>
+        </div>
+
+        <p class="format__cuts" aria-label={`Rounds: ${f.cuts.join(', then ')}`}>
+          {f.cuts.map((c, i) => (
+            <>
+              {i > 0 && <span class="format__arrow" aria-hidden="true">→</span>}
+              <span class={`format__cut ${i === f.cuts.length - 1 ? 'is-last' : ''}`}>{c}</span>
+            </>
+          ))}
+        </p>
+
+        <p class="format__meta">
+          {f.players} players · {f.cuts.length - 1} round{f.cuts.length - 1 > 1 ? 's' : ''} · {f.paid} paid
+        </p>
+
+        <p class="format__x">{f.text}</p>
+      </li>
+    ))}
+  </ul>
+
+  <p class="formats__key">
+    <span class="pip is-paid" aria-hidden="true"></span>
+    <span>finishes paid</span>
+    <span class="pip" aria-hidden="true"></span>
+    <span>goes home</span>
+  </p>
+</div>
+
+<style>
+  .formats{
+    margin: 0 0 clamp(44px, 6vw, 74px);
+    padding: clamp(24px, 3.2vw, 34px) 0 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .formats__head{ margin-bottom: clamp(22px, 3vw, 32px); }
+  .formats__title{ font-size: clamp(21px, 2.4vw, 28px); }
+  .formats__lede{
+    margin-top: 8px;
+    font-size: 14.5px;
+    font-weight: 600;
+    line-height: 1.6;
+    color: rgba(255,255,255,.88);
+    max-width: 58ch;
+  }
+  .formats__lede strong{ color: var(--gold); font-weight: 900; }
+
+  /* Three columns, hairlines between them: a comparison, which is neither a
+     rail of numerals nor a card. */
+  .formats__list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  .format{
+    padding: 0 clamp(16px, 2.4vw, 30px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .format:first-child{ padding-left: 0; }
+  .format:last-child{ padding-right: 0; }
+  .format + .format{ border-left: 1px solid var(--line); }
+
+  .format__name{
+    font-size: clamp(17px, 1.9vw, 21px);
+    font-weight: 900;
+    letter-spacing: -.3px;
+    text-transform: uppercase;
+    margin-bottom: clamp(14px, 1.8vw, 20px);
+  }
+
+  /* --- The pips. One per seat. --- */
+  .format__pipbox{
+    --pip: clamp(9px, 1.15vw, 13px);
+    --pipgap: calc(var(--pip) * .5);
+    /* Two rows tall, whatever the format: the blocks share a baseline and grow
+       upward. Four columns made the duel a single dot under an empty third of
+       a column — that read as a layout fault, not as a scale. At eight, the
+       arena is two rows: one entirely gold, one entirely hollow, which is the
+       "half of it finishes paid" line drawn instead of written. */
+    min-height: calc(var(--pip) * 2 + var(--pipgap));
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: clamp(14px, 1.8vw, 18px);
+  }
+  .format__pips{
+    display: grid;
+    grid-template-columns: repeat(8, var(--pip));
+    gap: var(--pipgap);
+    justify-content: start;
+  }
+  .pip{
+    width: var(--pip, 12px);
+    height: var(--pip, 12px);
+    border-radius: 50%;
+    background: rgba(0,0,0,.2);
+    box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.34);
+  }
+  .pip.is-paid{
+    background: linear-gradient(180deg, var(--gold-lite), var(--gold-deep));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 6px rgba(120,70,0,.3);
+  }
+
+  /* --- The cuts: 16 -> 8 -> 4 -> 1. The game in one line. --- */
+  .format__cuts{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: clamp(15px, 1.7vw, 18px);
+    font-weight: 900;
+    letter-spacing: -.4px;
+    color: rgba(255,255,255,.62);
+    margin-bottom: 8px;
+  }
+  .format__cut.is-last{ color: var(--gold); }
+  .format__arrow{ font-size: .8em; font-weight: 700; color: rgba(255,255,255,.4); }
+
+  .format__meta{
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.7);
+    margin-bottom: 10px;
+  }
+  .format__x{
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.55;
+    color: rgba(255,255,255,.88);
+    max-width: 30ch;
+  }
+
+  /* --- Legend --- */
+  .formats__key{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: clamp(20px, 2.6vw, 28px);
+    font-size: 12.5px;
+    font-weight: 700;
+    color: rgba(255,255,255,.7);
+  }
+  .formats__key .pip{ --pip: 11px; flex: none; }
+  .formats__key span + .pip{ margin-left: 12px; }
+
+  @media (max-width: 900px){
+    /* The hairlines turn horizontal: three stacked rows read as a comparison
+       just as well, and a 30ch line does not survive a third of a phone. */
+    .formats__list{ grid-template-columns: 1fr; }
+    .format{ padding: clamp(18px, 4vw, 24px) 0; }
+    .format:first-child{ padding-top: 0; }
+    .format + .format{ border-left: 0; border-top: 1px solid var(--line); }
+    .format__x{ max-width: 60ch; }
+    /* Stacked, the shared baseline no longer compares anything: let each
+       block take the height it needs. */
+    .format__pipbox{ min-height: 0; }
+  }
+</style>

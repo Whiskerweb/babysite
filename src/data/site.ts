@@ -54,6 +54,37 @@ export const navLinks = [
   { label: 'FAQ',       href: '#faq' },
 ];
 
+/** The three formats the server opens, and what each one is.
+ *
+ *  `cuts` is the round structure read off the game's own `MODES[mode].survivants`
+ *  (16 -> 8 -> 4 -> 1 for the arena): its length IS the number of rounds, which is
+ *  why the page can no longer say "3 rounds" across the board — that is the arena
+ *  alone. `paid` is how many places finish with at least their stake, and it is
+ *  half the table in all three: that is the one line worth putting on the page. */
+export const formats = [
+  {
+    name: '1v1',
+    players: 2,
+    paid: 1,
+    cuts: [2, 1],
+    text: 'One round, one survivor. Nothing to hide behind.',
+  },
+  {
+    name: 'Squad',
+    players: 4,
+    paid: 2,
+    cuts: [4, 2, 1],
+    text: 'Two rounds. Half the table is gone after the first.',
+  },
+  {
+    name: 'Arena',
+    players: 16,
+    paid: 8,
+    cuts: [16, 8, 4, 1],
+    text: 'Three rounds. Sixteen, then eight, then four — then a winner.',
+  },
+];
+
 export const payouts = [
   { rank: '1st',       gain: '25.00', mult: '×5',         highlight: false },
   { rank: '2nd',       gain: '12.50', mult: '×2.5',       highlight: false },
@@ -72,23 +103,23 @@ export const steps = [
   {
     n: '02',
     title: 'You run',
-    text: '16 players, 3 rounds drawn at random. Players drop out every round.',
+    text: '2, 4 or 16 players, depending on the table you picked. The maps are drawn at random, and players drop out at every round.',
   },
   {
     n: '03',
     title: 'You cash out',
-    text: 'Your final standing decides your share of the pot. The top eight walk away with at least their stake.',
+    text: 'Your final standing decides your share of the pot. The paid half of your table walks away with at least its stake.',
   },
 ];
 
 export const faq = [
   {
     q: 'What is Baby Guy?',
-    a: 'A 16-player battle royale. Everyone stakes 2, 5 or 10 {USDC}, three rounds are drawn at random, and the final standing decides how the pot is split.',
+    a: 'A battle royale played for stakes, in three formats: 1v1, squads of four, and 16-player arenas. Everyone stakes 2, 5 or 10 {USDC}, the maps are drawn at random, and the final standing decides how the pot is split.',
   },
   {
     q: 'How do I win?',
-    a: 'By finishing in the top eight. The first four take home more than their stake, 5th to 8th get exactly their stake back, the bottom eight lose theirs. The full split is in the prize table.',
+    a: 'By finishing in the paid half of your table — the winner in a 1v1, the top two in a squad, the top eight in an arena. In the arena the first four take home more than their stake, 5th to 8th get exactly their stake back, and the bottom eight lose theirs. The full split is in the prize table below.',
   },
   {
     q: 'Is it just luck?',
