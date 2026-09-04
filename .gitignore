@@ -9,3 +9,4 @@ dist/
 /assets/
 __pycache__/
 *.pyc
+.vercel
