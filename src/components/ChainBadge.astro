@@ -1,0 +1,39 @@
+---
+import { CHAIN } from '../data/site';
+
+// LE MEME BADGE QUE DANS LE JEU, au pixel : `.rh-badge` de
+// `tools/feel-lab/index.html` — lime #ccff00, plume noire, ombre portee de 3 px.
+// Le jeu le porte sur sa porte d'entree (« BUILT ON ROBINHOOD CHAIN »), dans le
+// portefeuille et dans la boutique. Le site et le jeu disent donc la meme chose
+// de la meme facon, ce qui est tout l'interet de le recopier plutot que d'en
+// dessiner un autre.
+//
+// C'est une ATTRIBUTION TECHNIQUE — « ce sur quoi c'est construit » — et pas un
+// logo de partenaire. D'ou le texte « built on », et d'ou son absence de
+// l'en-tete : a cote de notre propre logo il se lirait comme un co-branding.
+interface Props { label?: string; class?: string; }
+const { label = `Built on ${CHAIN}`, class: cls = '' } = Astro.props;
+---
+<span class={`rh-badge ${cls}`}>
+  <img src="/icons/robinhood-plume.png" alt="" width="96" height="128" loading="lazy" decoding="async" />
+  {label}
+</span>
+
+<style>
+  .rh-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 11px 6px 9px;
+    border-radius: 10px;
+    background: #CCFF00;
+    color: #111;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 3px 0 #7FA300, inset 0 0 0 2px rgba(255,255,255,.35);
+  }
+  .rh-badge img{ width: 11px; height: auto; display: block; }
+</style>

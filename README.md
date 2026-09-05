@@ -50,7 +50,8 @@ burger menu carries the play link too — on mobile it is the panel the visitor 
 | `BURN_PCT` | `'10'` | Share of every match bought back and burned = the whole commission. |
 | `BURN_COUNTER` | `null` | Burned-tokens counter. Shows `—` until you set it. |
 | `BURN_WALLET` | `null` | Buyback wallet address. Shows `—`, becomes a Solscan link once set. |
-| `socials` | `#` | Replace the five `href`s with the real accounts. |
+| `socials` | X live, Discord + TikTok pending | Three accounts. `href: null` renders a dimmed, **unclickable** mark instead of a link — the list is rendered three times, so five `#` hrefs were fifteen dead links. Give an account an `href` and it becomes a link with no other change. |
+| `SOCIAL_SOON` | "under construction…" | The tooltip on a pending account. The footer also states it in visible text, because a tooltip does not exist on a phone. |
 
 Numbers used across the page (5 USDC table, 16 players, 10 % commission, 80 USDC pot,
 25 / 12.50 / 8.50 / 6.00 / stake back / nothing) all come from `payouts`, `TABLE_STAKE`,
@@ -76,6 +77,8 @@ Numbers used across the page (5 USDC table, 16 players, 10 % commission, 80 USDC
 
 ```
 public/img/babyvlad.webp       632×760, 55 kB (from a 1144×1375 / 1.3 MB PNG — 24x smaller)
+public/icons/robinhood-plume*.png   the feather, 3 variants (black / lime / white),
+                               copied from the game's own tools/feel-lab/public/icons/
 public/videos/trailer.mp4      27 s, 1600×900, 7.2 MB (re-encoded from V1trailer-sous-titre.mp4)
 public/posters/trailer.jpg     frame at 6 s
 public/posters/jeu-course.jpg  poster for the gameplay loop
@@ -99,6 +102,15 @@ sections, which were removed from the page.
 Vercel, static, from `main`. `npm run build` locally reproduces exactly what it serves —
 there is no server-side anything on this page.
 
+## A trap this repo fell into once
+
+**A scoped selector cannot reach an element rendered by a child component.** The socials
+moved into `Social.astro`, and `.hdr__social{…}` in `Header.astro` — plus `.ft__socials a`
+in `Footer.astro` — silently stopped matching: Astro stamps its scope attribute on the
+elements of *its own* template, and the `<a>` now carries `Social`'s. Nothing errored, the
+circles simply vanished from the header and around the X in the footer. Selectors that
+cross a component boundary need `:global(...)`.
+
 ## Design rules baked in
 
 - Pastel palette, all tokens in `src/styles/global.css`: cream `#FBF6FF` (the line
@@ -111,6 +123,11 @@ there is no server-side anything on this page.
   otherwise content slides under the diagonal.
 - **One gold button per screen** — gold is the action colour, and it now means exactly
   one thing: go and play. Everything else is ghost, pink or plain text.
+- **The Robinhood marks are ATTRIBUTION, not a partner logo.** `ChainBadge.astro` is a
+  pixel-for-pixel copy of the game's own `.rh-badge` (lime `#CCFF00`, black feather, 3 px
+  drop shadow) so the site and the game say the same thing the same way. It reads *built
+  on*, and it is deliberately **absent from the header**: sitting next to our own logo it
+  would read as a co-brand rather than as "this is the chain we settle on".
 - **Three visual idioms in `#the-game`, and they do not borrow from each other.** The
   three beats own the outlined numerals on a rail; the Token section owns the boxed
   look; the formats block owns the pips. Each shows its data rather than stating it —

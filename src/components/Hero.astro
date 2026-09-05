@@ -11,7 +11,10 @@ import { GAME_URL, PLAY_LABEL, CHAIN, CLAIM_CATEGORY } from '../data/site';
          Merging them would cost the three-verb line, which is the strongest
          thing on the page. -->
     <p class="hero__claim">
-      <span class="hero__claim-dot" aria-hidden="true"></span>
+      <!-- La plume a la place d'un point : le point ne voulait rien dire,
+           la plume dit de quelle chaine on parle avant meme qu'on lise. -->
+      <img class="hero__claim-mark" src="/icons/robinhood-plume-blanc.png" alt=""
+           width="96" height="128" loading="eager" decoding="async" />
       <!-- Le libelle tient dans UN span. Laisses nus, les bouts de texte
            deviennent des elements flex separes : sur un telephone ils se
            rangeaient en colonnes et coupaient « run-to- / earn » en deux. -->
@@ -86,11 +89,11 @@ import { GAME_URL, PLAY_LABEL, CHAIN, CLAIM_CATEGORY } from '../data/site';
   .hero__claim-txt{ text-wrap: balance; }
   /* Le nom de la categorie ne se coupe jamais sur son trait d'union. */
   .hero__claim strong{ color: var(--gold); font-weight: 900; white-space: nowrap; }
-  .hero__claim-dot{
+  .hero__claim-mark{
     flex: none;
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 0 3px rgba(255,201,60,.22);
+    width: auto;
+    height: 1.25em;
+    filter: drop-shadow(0 1px 4px rgba(0,0,0,.55));
   }
 
   .hero__title{

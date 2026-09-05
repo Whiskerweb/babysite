@@ -1,4 +1,5 @@
 ---
+import ChainBadge from './ChainBadge.astro';
 import Divider from './Divider.astro';
 import T from './T.astro';
 import Usdc from './Usdc.astro';
@@ -98,6 +99,7 @@ const chain = [
          ============================================================ -->
     <div class="proof">
       <div class="proof__txt">
+        <ChainBadge class="proof__badge" />
         <p class="proof__t">Don't take our word for it.</p>
         <p class="proof__x">
           The game publishes everything it does on {CHAIN}, live and to everyone:
@@ -287,6 +289,7 @@ const chain = [
     background: rgba(255,255,255,.08);
   }
   .proof__txt{ flex: 1 1 420px; }
+  .proof__badge{ margin-bottom: 12px; }
   .proof__t{
     font-size: clamp(17px, 1.9vw, 21px);
     font-weight: 900;

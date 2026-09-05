@@ -1,5 +1,5 @@
 ---
-import Icon from './Icon.astro';
+import Social from './Social.astro';
 import { navLinks, socials, GAME_URL, PLAY_LABEL } from '../data/site';
 ---
 <header class="hdr" id="hdr">
@@ -16,9 +16,7 @@ import { navLinks, socials, GAME_URL, PLAY_LABEL } from '../data/site';
       <div class="hdr__actions">
         <div class="hdr__socials">
           {socials.map((s) => (
-            <a class="hdr__social" href={s.href} aria-label={s.name} rel="noopener">
-              <Icon name={s.icon} />
-            </a>
+            <Social class="hdr__social" name={s.name} href={s.href} icon={s.icon} />
           ))}
         </div>
 
@@ -42,7 +40,7 @@ import { navLinks, socials, GAME_URL, PLAY_LABEL } from '../data/site';
   <a class="mmenu__play" href={GAME_URL}>{PLAY_LABEL}</a>
   <div class="mmenu__socials">
     {socials.map((s) => (
-      <a href={s.href} aria-label={s.name} rel="noopener"><Icon name={s.icon} /></a>
+      <Social name={s.name} href={s.href} icon={s.icon} />
     ))}
   </div>
 </div>
@@ -114,15 +112,15 @@ import { navLinks, socials, GAME_URL, PLAY_LABEL } from '../data/site';
   /* --- Actions --- */
   .hdr__actions{ display: flex; align-items: center; gap: clamp(10px, 1.4vw, 20px); margin-left: auto; }
   .hdr__socials{ display: flex; align-items: center; gap: 9px; }
-  .hdr__social{
+  .hdr__socials :global(.hdr__social){
     width: 36px; height: 36px;
     border-radius: 50%;
     border: 1.6px solid rgba(255,255,255,.28);
     display: grid; place-items: center;
     transition: all .18s ease;
   }
-  .hdr__social :global(svg){ width: 16px; height: 16px; }
-  .hdr__social:hover{ background: var(--gold); border-color: var(--gold); color: var(--violet-ink); transform: translateY(-2px); }
+  .hdr__socials :global(.hdr__social svg){ width: 16px; height: 16px; }
+  .hdr__socials :global(a.hdr__social:hover){ background: var(--gold); border-color: var(--gold); color: var(--violet-ink); transform: translateY(-2px); }
 
   /* --- Burger --- */
   .hdr__burger{
@@ -179,8 +177,9 @@ import { navLinks, socials, GAME_URL, PLAY_LABEL } from '../data/site';
   }
   .mmenu__play{ color: var(--gold); }
   .mmenu__socials{ display: flex; gap: 18px; padding-top: 16px; }
-  .mmenu__socials a{ border: 0; padding: 0; }
+  .mmenu__socials :global(a), .mmenu__socials :global(.is-soon){ border: 0; padding: 0; }
   .mmenu__socials :global(svg){ width: 20px; height: 20px; }
+  .mmenu__socials :global(.is-soon){ display: inline-flex; }
 
   @media (max-width: 1120px){
     .hdr__nav{ display: none; }

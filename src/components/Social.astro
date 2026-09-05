@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro';
+import { SOCIAL_SOON } from '../data/site';
+
+// Un compte ouvert est un LIEN ; un compte qui n'existe pas encore est un
+// SPAN. La liste est rendue trois fois sur la page (en-tete, menu burger,
+// pied), et la condition n'a pas a y etre recopiee trois fois : elle finirait
+// juste par diverger a un endroit sur trois.
+interface Props { name: string; href: string | null; icon: string; class?: string; }
+const { name, href, icon, class: cls } = Astro.props;
+const label = href ? name : `${name} — ${SOCIAL_SOON}`;
+---
+{href ? (
+  <a class={cls || undefined} href={href} aria-label={name} rel="noopener" target="_blank">
+    <Icon name={icon} />
+  </a>
+) : (
+  <span class={cls ? `${cls} is-soon` : 'is-soon'} role="img" aria-label={label} title={label}>
+    <Icon name={icon} />
+  </span>
+)}
+
+<style>
+  /* Eteint, et il ne fait pas semblant d'etre cliquable : pas de curseur main,
+     pas d'effet au survol. On voit que le compte est prevu, pas qu'il est mort. */
+  .is-soon{
+    opacity: .42;
+    cursor: default;
+  }
+</style>

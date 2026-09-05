@@ -1,5 +1,6 @@
 ---
-import Icon from './Icon.astro';
+import Social from './Social.astro';
+import ChainBadge from './ChainBadge.astro';
 import Divider from './Divider.astro';
 import { socials, navLinks, GAME_URL, PLAY_LABEL, TRACKER_URL, CHAIN, NETWORK } from '../data/site';
 const year = new Date().getFullYear();
@@ -10,7 +11,8 @@ const year = new Date().getFullYear();
     <div class="ft__top">
       <div class="ft__brand">
         <img class="ft__logo" src="/img/logo.png" alt="Baby Guy" width="900" height="583" />
-        <p class="ft__tag">Real-stakes battle royale. 16 players, 3 rounds, one pot.</p>
+        <p class="ft__tag">Real-stakes battle royale. 1v1, squads of four, arenas of sixteen.</p>
+        <ChainBadge class="ft__badge" />
       </div>
 
       <nav class="ft__nav" aria-label="Footer">
@@ -19,10 +21,12 @@ const year = new Date().getFullYear();
         <a href={TRACKER_URL} rel="noopener" target="_blank">On-chain proof</a>
       </nav>
 
-      <div class="ft__socials">
-        {socials.map((s) => (
-          <a href={s.href} aria-label={s.name} rel="noopener"><Icon name={s.icon} /></a>
-        ))}
+      <div class="ft__social-col">
+        <div class="ft__socials">
+          {socials.map((s) => <Social name={s.name} href={s.href} icon={s.icon} />)}
+        </div>
+        <!-- Une infobulle ne se voit pas sur un telephone : la ligne est ecrite. -->
+        <p class="ft__soon">Discord and TikTok are under construction. Find us on X in the meantime.</p>
       </div>
     </div>
 
@@ -56,13 +60,18 @@ const year = new Date().getFullYear();
   }
   .ft__logo{ height: 56px; width: auto; }
   .ft__tag{ margin-top: 14px; font-size: 13.5px; font-weight: 600; color: var(--muted); max-width: 34ch; line-height: 1.5; }
+  .ft__badge{ margin-top: 16px; }
 
   .ft__nav{ display: flex; flex-direction: column; gap: 10px; }
   .ft__nav a{ font-size: 13.5px; font-weight: 700; color: var(--muted); width: fit-content; }
   .ft__nav a:hover{ color: var(--gold); }
 
+  .ft__social-col{ display: flex; flex-direction: column; gap: 12px; align-items: flex-end; }
+  .ft__soon{ font-size: 12px; font-weight: 600; line-height: 1.5; color: var(--muted); max-width: 26ch; text-align: right; }
+
   .ft__socials{ display: flex; gap: 10px; }
-  .ft__socials a{
+  .ft__socials :global(a),
+  .ft__socials :global(.is-soon){
     width: 36px; height: 36px;
     border-radius: 50%;
     border: 1.6px solid rgba(255,255,255,.22);
@@ -70,7 +79,7 @@ const year = new Date().getFullYear();
     transition: all .18s ease;
   }
   .ft__socials :global(svg){ width: 16px; height: 16px; }
-  .ft__socials a:hover{ background: var(--gold); border-color: var(--gold); color: var(--violet-ink); }
+  .ft__socials :global(a:hover){ background: var(--gold); border-color: var(--gold); color: var(--violet-ink); }
 
   .ft__legal{ padding-top: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; gap: 12px; }
   .ft__warn{ font-size: 12.5px; line-height: 1.6; color: rgba(255,255,255,.5); max-width: 92ch; }
@@ -79,5 +88,7 @@ const year = new Date().getFullYear();
 
   @media (max-width: 820px){
     .ft__top{ grid-template-columns: 1fr; }
+    .ft__social-col{ align-items: flex-start; }
+    .ft__soon{ text-align: left; max-width: 44ch; }
   }
 </style>

@@ -61,7 +61,10 @@ const ledger = [
       </dl>
 
       <p class="play__note">
-        <span class="play__dot" aria-hidden="true"></span>
+        <!-- Plume LIME, comme le pied de la porte du jeu : meme information,
+             meme signe. -->
+        <img class="play__mark" src="/icons/robinhood-plume-vert.png" alt=""
+             width="96" height="128" loading="lazy" decoding="async" />
         <span>
           <strong>{CHAIN} · {NETWORK}</strong> — the <Usdc /> in play is test <Usdc />,
           and the game mints it for you: {FAUCET_USDC} at a time, once every
@@ -198,22 +201,21 @@ const ledger = [
     align-items: flex-start;
     gap: 10px;
     padding: 13px 20px;
-    border: 1px solid rgba(255,201,60,.45);
+    border: 1px solid rgba(204,255,0,.42);
     border-radius: 14px;
-    background: rgba(255,201,60,.1);
+    background: rgba(204,255,0,.09);
     font-size: 13px;
     font-weight: 500;
     line-height: 1.55;
     color: #fff;
     max-width: 56ch;
   }
-  .play__note strong{ color: var(--gold-lite); font-weight: 900; text-transform: uppercase; letter-spacing: .6px; }
-  .play__dot{
+  .play__note strong{ color: #CCFF00; font-weight: 900; text-transform: uppercase; letter-spacing: .6px; }
+  .play__mark{
     flex: none;
-    margin-top: 7px;
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 0 4px rgba(255,201,60,.18);
+    margin-top: 3px;
+    width: auto;
+    height: 15px;
   }
 
   /* --- The door, in a card of the same stock as the rest of the site --- */

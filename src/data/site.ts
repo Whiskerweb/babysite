@@ -96,13 +96,21 @@ export const POT = 80;             // USDC collected on a 5 USDC table
  *  open is a visitor sent to a queue that will never fill. */
 export const TABLES = [2, 5, 10];  // USDC
 
+/** The accounts. `href: null` means the account does not exist yet: it renders
+ *  as a dimmed, UNCLICKABLE mark instead of a link.
+ *
+ *  Five icons pointing at `#` was fifteen dead links on the built page — the
+ *  header, the burger menu and the footer each render the whole list. A dead
+ *  link costs more than a missing one: the visitor clicks, nothing happens, and
+ *  they conclude the site is broken rather than that the account is not open. */
 export const socials = [
-  { name: 'X',         href: '#', icon: 'x' },
-  { name: 'Discord',   href: '#', icon: 'discord' },
-  { name: 'Instagram', href: '#', icon: 'instagram' },
-  { name: 'TikTok',    href: '#', icon: 'tiktok' },
-  { name: 'YouTube',   href: '#', icon: 'youtube' },
+  { name: 'X',       href: 'https://x.com/BabyGuygame', icon: 'x' },
+  { name: 'Discord', href: null, icon: 'discord' },
+  { name: 'TikTok',  href: null, icon: 'tiktok' },
 ];
+
+/** Said once, wherever a not-yet account is shown. */
+export const SOCIAL_SOON = 'under construction. Coming soon — find us on X in the meantime.';
 
 export const navLinks = [
   { label: 'The game',  href: '#the-game' },
