@@ -4,7 +4,7 @@ import Usdc from './Usdc.astro';
 import T from './T.astro';
 import {
   WITHDRAW_MIN, TABLES, GAME_URL, PLAY_LABEL, NETWORK, CHAIN,
-  FAUCET_USDC, FAUCET_EVERY_MINUTES, WALLETS,
+  FAUCET_USDC, FAUCET_EVERY_MINUTES, WALLETS, SKIN,
 } from '../data/site';
 
 // The closing section. It was the whitelist form — an email in exchange for a
@@ -74,10 +74,30 @@ const ledger = [
 
     <div class="play__cta-col">
       <div class="play__card">
-        <p class="play__card-title">Ready?</p>
+        <!-- Il DEBORDE du haut de la carte, il n'y est pas colle : pose dans le
+             cadre il aurait eu l'air d'une vignette de catalogue. Il pointe vers
+             le lecteur, donc il regarde du bon cote d'un appel a l'inscription. -->
+        <figure class="skin">
+          <span class="skin__glow" aria-hidden="true"></span>
+          <span class="skin__flash">Free</span>
+          <img
+            class="skin__img"
+            src={SKIN.image}
+            alt={`${SKIN.name} — ${SKIN.who}, as a playable character`}
+            width="632" height="760"
+            loading="lazy" decoding="async"
+          />
+        </figure>
+
+        <p class="skin__name">{SKIN.name}</p>
+
+        <p class="play__card-title">
+          <span class="play__card-free">Free skin</span> when you sign up.
+        </p>
 
         <p class="play__card-txt">
-          One button, then the game. You make your account on the first screen it shows you.
+          {SKIN.who}, in a diaper. He is yours the moment your account exists —
+          the only character in the game you do not have to earn.
         </p>
 
         <a class="btn btn--gold btn--lg play__submit" href={GAME_URL}>{PLAY_LABEL}</a>
@@ -197,8 +217,11 @@ const ledger = [
   }
 
   /* --- The door, in a card of the same stock as the rest of the site --- */
-  .play__cta-col{ position: sticky; top: 96px; }
+  /* Le personnage sort du cadre par le haut, donc la colonne lui reserve la
+     place au-dessus de la carte — sinon il passait sous la section precedente. */
+  .play__cta-col{ position: sticky; top: 96px; padding-top: clamp(96px, 12vw, 178px); }
   .play__card{
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -208,13 +231,74 @@ const ledger = [
     background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.04));
     box-shadow: 0 18px 48px rgba(30,14,80,.28);
   }
-  .play__card-title{
-    font-size: clamp(19px, 2vw, 23px);
+
+  /* ============================================================
+     LE SKIN. La lueur derriere lui reprend les deux radiales de la
+     section — c'est ce qui le pose DANS le decor au lieu de le coller
+     dessus : le meme rose et le meme or, en plus serre.
+     ============================================================ */
+  .skin{
+    position: relative;
+    /* Le debordement vaut la moitie de sa hauteur, et la colonne reserve
+       autant au-dessus : les deux valeurs bougent ENSEMBLE ou il passe sous
+       la section precedente. */
+    margin: clamp(-172px, -11.5vw, -92px) auto 2px;
+    width: min(84%, 332px);
+    aspect-ratio: 632 / 760;
+    display: grid;
+    place-items: end center;
+  }
+  .skin__glow{
+    position: absolute;
+    inset: 8% -22% -6%;
+    border-radius: 50%;
+    background:
+      radial-gradient(58% 52% at 50% 62%, rgba(255,127,176,.55), transparent 70%),
+      radial-gradient(42% 38% at 50% 78%, rgba(255,201,60,.42), transparent 72%);
+    filter: blur(6px);
+  }
+  .skin__img{
+    position: relative;
+    width: 100%;
+    height: auto;
+    /* Une ombre portee au sol : sans elle il flotte. */
+    filter: drop-shadow(0 16px 22px rgba(28,12,70,.55));
+  }
+  /* La pastille FREE, posee de biais sur son epaule pointee. */
+  .skin__flash{
+    position: absolute;
+    top: 13%; left: -6%;
+    z-index: 2;
+    transform: rotate(-11deg);
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--gold-lite) 0%, var(--gold) 52%, var(--gold-deep) 100%);
+    color: var(--violet-ink);
+    font-size: clamp(13px, 1.5vw, 17px);
     font-weight: 900;
-    letter-spacing: -.4px;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.6), 0 6px 16px rgba(120,70,0,.35);
+  }
+  .skin__name{
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .play__card-title{
+    text-align: center;
+    font-size: clamp(21px, 2.4vw, 28px);
+    font-weight: 900;
+    letter-spacing: -.5px;
+    line-height: 1.12;
     margin-bottom: 2px;
   }
+  .play__card-free{ color: var(--gold); }
   .play__card-txt{
+    text-align: center;
     font-size: 14.5px;
     font-weight: 600;
     line-height: 1.55;
@@ -225,7 +309,10 @@ const ledger = [
 
   @media (max-width: 900px){
     .play__grid{ grid-template-columns: 1fr; gap: clamp(30px, 6vw, 44px); }
-    .play__cta-col{ position: static; }
+    /* Empilee, la colonne n'a plus de section au-dessus a chevaucher : le
+       personnage tient dans la carte et la reserve de place n'a plus lieu. */
+    .play__cta-col{ position: static; padding-top: clamp(58px, 16vw, 104px); }
+    .skin{ margin-top: clamp(-104px, -16vw, -58px); width: min(74%, 268px); }
     .ledger__x{ max-width: 60ch; }
   }
   @media (max-width: 480px){

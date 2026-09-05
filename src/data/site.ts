@@ -59,6 +59,22 @@ export const FAUCET_EVERY_MINUTES = 60;
  *  for nothing. */
 export const WALLETS = ['MetaMask', 'Rabby', 'Robinhood Wallet'];
 
+/** The sign-up skin. Naming follows the game's own catalogue — BabyTrump,
+ *  BabyMusk, BabyNetan — so a player who reads the name here recognises the
+ *  entry in the wardrobe.
+ *
+ *  CAREFUL: as of 5 September 2026 this character does NOT exist in the game.
+ *  A character needs a rigged `char-<id>.glb` in `tools/feel-lab/public/models/`,
+ *  an entry in `cosmetics.js:MODELS`, and — for a sign-up grant — a rule in
+ *  `boutique.js`, which today knows only one way to unlock anything (post on X).
+ *  Until those three land, this section promises something the game does not
+ *  hand over, and it does so at the exact moment someone signs up. */
+export const SKIN = {
+  name: 'BabyVlad',
+  who: 'Vlad, the Robinhood CEO',
+  image: '/img/babyvlad.webp',
+};
+
 /** Minimum balance before a withdrawal can be requested. */
 export const WITHDRAW_MIN = 20;
 
