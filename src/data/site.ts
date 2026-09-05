@@ -22,11 +22,42 @@ export const TRACKER_URL = `${GAME_URL}/api/suivi`;
  *  drift apart. */
 export const PLAY_LABEL = 'Play now';
 
-/** Solana network the deployed game settles on.
- *  `devnet` = test USDC, no real money, faucet-funded. The page says so
- *  plainly rather than letting a visitor assume otherwise: sending someone
- *  to a money game under a wrong impression is the one thing we do not do. */
-export const NETWORK = 'devnet';
+/** THE CHAIN the deployed game settles on — Robinhood Chain, since 5 September
+ *  2026. It was Solana until then; nothing of that name is left in the game and
+ *  nothing of it should be left on this page.
+ *
+ *  Read off the live game's own `/api/stats`, which reports
+ *  `Robinhood Chain Testnet`, chain id 46630, and the three deployed contracts
+ *  (USDC, BG, Lot). If those three lines ever disagree with this file, the live
+ *  game is right and this file is stale. */
+export const CHAIN = 'Robinhood Chain';
+export const CHAIN_ID = 46630;
+export const CHAIN_EXPLORER = 'https://explorer.testnet.chain.robinhood.com';
+
+/** `testnet` = test USDC, no real money. The page says so plainly rather than
+ *  letting a visitor assume otherwise: sending someone to a money game under a
+ *  wrong impression is the one thing we do not do. Moves in step with
+ *  `ROBINHOOD_RESEAU` in the game repo's `deploy/fly/backend.toml`. */
+export const NETWORK = 'testnet';
+
+/** How we say what this is. The product director's claim, 5 September 2026.
+ *  Stated once here so the badge, the page title and the meta description
+ *  cannot end up wording it three different ways. */
+export const CLAIM_CATEGORY = 'run-to-earn';
+
+/** The test USDC the game MINTS on request — testnet only, and the reason a
+ *  visitor can play the minute they land. Not a public faucet: nobody sells
+ *  test USDC, so the game mints it (`POST /robinet`, `backend/src/config.js`).
+ *  Defaults are live — no ROBINET_MICROS override is set on the deployed
+ *  backend. On mainnet this cannot exist: real USDC has no mint function. */
+export const FAUCET_USDC = 20;
+export const FAUCET_EVERY_MINUTES = 60;
+
+/** The wallets the game's own sign-in screen offers, in its order. Read off the
+ *  live gate ("CONTINUE WITH WALLET — MetaMask · Rabby · Robinhood Wallet"), not
+ *  guessed: naming a wallet the gate does not offer sends someone to install one
+ *  for nothing. */
+export const WALLETS = ['MetaMask', 'Rabby', 'Robinhood Wallet'];
 
 /** Minimum balance before a withdrawal can be requested. */
 export const WITHDRAW_MIN = 20;
@@ -131,6 +162,10 @@ export const faq = [
     a: 'By finishing in the paid half of your table — the winner in a 1v1, the top two in a squad, the top eight in an arena. In the arena the first four take home more than their stake, 5th to 8th get exactly their stake back, and the bottom eight lose theirs. The full split is in the prize table below.',
   },
   {
+    q: `Why ${CHAIN}?`,
+    a: `Because the money has to be checkable by the person who lost it. Every stake, every pot, every payout and every burn is a transaction on ${CHAIN} that anyone can open in the explorer — we do not ask to be believed. It also means you sign in with the wallet you already have: ${WALLETS.join(', ')}. We are the first ${CLAIM_CATEGORY} game to run on it, and the whole money path was built for it — one atomic transaction per lobby and per settlement, so a match either pays everybody or nobody.`,
+  },
+  {
     q: 'Is it just luck?',
     a: 'The three rounds are drawn at random, what happens inside them is not: timing, lines and reflexes decide. The draw puts all sixteen players on equal footing, it does not play for you.',
   },
@@ -140,14 +175,14 @@ export const faq = [
   },
   {
     q: 'Can I play right now?',
-    a: 'Yes. Hit any gold button on this page, create an account, and you are in a queue. Duels start at two players, squads at four, the arena at sixteen.',
+    a: `Yes. Hit any gold button on this page, then either make an account with an email or sign in with your wallet — ${WALLETS.join(', ')} — and you are in a queue. Duels start at two players, squads at four, the arena at sixteen.`,
   },
   {
     q: 'Is this real money yet?',
-    a: 'Not yet. The game settles on Solana devnet: the {USDC} you stake is test {USDC} from a public faucet, worth nothing, and so is anything you win. Every mechanic — deposits, stakes, the pot, the payout, the buyback — runs exactly as it will on mainnet, on a chain you can read. The switch to real money happens once the legal review is done, and it will be announced here.',
+    a: `Not yet. The game settles on ${CHAIN} ${NETWORK}: the {USDC} you stake is test {USDC}, and the game mints it for you — ${FAUCET_USDC} at a time, once every ${FAUCET_EVERY_MINUTES} minutes. It is worth nothing, and so is anything you win. Every mechanic — the deposit, the stake, the pot, the payout, the buyback and the burn — runs exactly as it will with real money, on a chain you can read. The switch happens once the legal review is done, and it will be announced here.`,
   },
   {
     q: 'Which countries?',
-    a: 'Real money is on the line the day we leave devnet: jurisdictions where this kind of game is restricted are excluded, and the list will be published before real deposits open. 18+, no exceptions.',
+    a: 'Real money is on the line the day we leave testnet: jurisdictions where this kind of game is restricted are excluded, and the list will be published before real deposits open. 18+, no exceptions.',
   },
 ];

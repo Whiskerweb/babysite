@@ -1,11 +1,23 @@
 ---
 import Usdc from './Usdc.astro';
-import { GAME_URL, PLAY_LABEL } from '../data/site';
+import { GAME_URL, PLAY_LABEL, CHAIN, CLAIM_CATEGORY } from '../data/site';
 ---
 <section class="hero" id="top">
   <div class="hero__scrim"></div>
 
   <div class="hero__content">
+    <!-- The claim goes ABOVE the headline and not inside it: "Bet. Run. Cash
+         out." is what the game does to you, the badge is what the game IS.
+         Merging them would cost the three-verb line, which is the strongest
+         thing on the page. -->
+    <p class="hero__claim">
+      <span class="hero__claim-dot" aria-hidden="true"></span>
+      <!-- Le libelle tient dans UN span. Laisses nus, les bouts de texte
+           deviennent des elements flex separes : sur un telephone ils se
+           rangeaient en colonnes et coupaient « run-to- / earn » en deux. -->
+      <span class="hero__claim-txt">The first <strong>{CLAIM_CATEGORY}</strong> game on {CHAIN}</span>
+    </p>
+
     <h1 class="hero__title">Bet. Run. Cash out.</h1>
 
     <p class="hero__sub">
@@ -52,6 +64,35 @@ import { GAME_URL, PLAY_LABEL } from '../data/site';
     text-align: center;
     gap: clamp(14px, 2.2vh, 24px);
   }
+  /* The badge. Gold hairline on a dark wash, because it sits on a photograph
+     and a translucent pill alone would read differently over every part of it.
+     Not a button: nothing here is clickable, gold stays the action colour. */
+  .hero__claim{
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 9px 18px;
+    border: 1px solid rgba(255,201,60,.55);
+    border-radius: 999px;
+    background: rgba(26,14,58,.55);
+    backdrop-filter: blur(6px);
+    font-size: clamp(11.5px, 1.2vw, 14px);
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.92);
+    text-shadow: 0 1px 6px rgba(0,0,0,.5);
+  }
+  .hero__claim-txt{ text-wrap: balance; }
+  /* Le nom de la categorie ne se coupe jamais sur son trait d'union. */
+  .hero__claim strong{ color: var(--gold); font-weight: 900; white-space: nowrap; }
+  .hero__claim-dot{
+    flex: none;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px rgba(255,201,60,.22);
+  }
+
   .hero__title{
     font-size: clamp(27px, 4.9vw, 62px);
     text-transform: uppercase;
@@ -68,4 +109,8 @@ import { GAME_URL, PLAY_LABEL } from '../data/site';
     text-shadow: 0 2px 12px rgba(0,0,0,.7);
   }
   .hero__trailer{ text-shadow: 0 2px 10px rgba(0,0,0,.7); }
+
+  @media (max-width: 560px){
+    .hero__claim{ padding: 8px 14px; gap: 7px; letter-spacing: .2px; line-height: 1.45; }
+  }
 </style>

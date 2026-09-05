@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import Divider from './Divider.astro';
-import { socials, navLinks, GAME_URL, PLAY_LABEL, TRACKER_URL } from '../data/site';
+import { socials, navLinks, GAME_URL, PLAY_LABEL, TRACKER_URL, CHAIN, NETWORK } from '../data/site';
 const year = new Date().getFullYear();
 ---
 <footer class="ft">
@@ -30,7 +30,7 @@ const year = new Date().getFullYear();
       <p class="ft__warn">
         <strong>18+ only.</strong> Baby Guy is played for stakes: a match can cost you
         your entire stake. Only ever stake what you can afford to lose. The game
-        currently settles on Solana devnet — test USDC, no real money.
+        currently settles on {CHAIN} {NETWORK} — test USDC, no real money.
       </p>
       <p class="ft__warn">
         <strong>Jurisdiction restrictions.</strong> Paid matches are off limits wherever

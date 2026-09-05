@@ -2,7 +2,7 @@
 import Divider from './Divider.astro';
 import T from './T.astro';
 import Usdc from './Usdc.astro';
-import { COMMISSION_PCT, TABLE_STAKE, PLAYERS, POT, BURN_COUNTER, BURN_WALLET, TRACKER_URL, NETWORK } from '../data/site';
+import { COMMISSION_PCT, TABLE_STAKE, PLAYERS, POT, BURN_COUNTER, BURN_WALLET, TRACKER_URL, NETWORK, CHAIN } from '../data/site';
 
 // One table, one pot, two destinations. Everything below is derived so the
 // numbers can never drift from site.ts.
@@ -100,8 +100,8 @@ const chain = [
       <div class="proof__txt">
         <p class="proof__t">Don't take our word for it.</p>
         <p class="proof__x">
-          The game publishes everything it does on Solana, live and to everyone:
-          matches played, {NETWORK === 'devnet' ? 'test ' : ''}<Usdc /> staked, every
+          The game publishes everything it does on {CHAIN}, live and to everyone:
+          matches played, {NETWORK !== 'mainnet' ? 'test ' : ''}<Usdc /> staked, every
           buyback, every burn, every transaction, and the treasury addresses with
           their explorer links.
         </p>

@@ -3,7 +3,8 @@ import Divider from './Divider.astro';
 import Usdc from './Usdc.astro';
 import T from './T.astro';
 import {
-  WITHDRAW_MIN, TABLES, GAME_URL, PLAY_LABEL, NETWORK,
+  WITHDRAW_MIN, TABLES, GAME_URL, PLAY_LABEL, NETWORK, CHAIN,
+  FAUCET_USDC, FAUCET_EVERY_MINUTES, WALLETS,
 } from '../data/site';
 
 // The closing section. It was the whitelist form — an email in exchange for a
@@ -14,7 +15,7 @@ const ledger = [
     k: 'You need',
     v: 'an account',
     unit: false,
-    x: 'An email and a password on the first screen. No card, no wallet extension, no download.',
+    x: `An email and a password on the first screen — or your wallet, if you have one: ${WALLETS.join(', ')}. No card, no download.`,
   },
   {
     k: 'You stake',
@@ -62,9 +63,11 @@ const ledger = [
       <p class="play__note">
         <span class="play__dot" aria-hidden="true"></span>
         <span>
-          <strong>{NETWORK}</strong> — the <Usdc /> in play is test <Usdc /> from a public
-          faucet. It is worth nothing, and so is anything you win. Every mechanic runs
-          exactly as it will with real money, on a chain you can read.
+          <strong>{CHAIN} · {NETWORK}</strong> — the <Usdc /> in play is test <Usdc />,
+          and the game mints it for you: {FAUCET_USDC} at a time, once every
+          {FAUCET_EVERY_MINUTES} minutes. It is worth nothing, and so is anything you
+          win. Every mechanic — the deposit, the stake, the pot, the payout, the
+          buyback — runs exactly as it will with real money, on a chain you can read.
         </span>
       </p>
     </div>
@@ -167,7 +170,7 @@ const ledger = [
     max-width: 46ch;
   }
 
-  /* The devnet notice. Same pill as the old scarcity line, and it says the one
+  /* The testnet notice. Same pill as the old scarcity line, and it says the one
      thing a visitor about to stake needs to know before clicking. */
   .play__note{
     margin-top: clamp(22px, 3vw, 30px);

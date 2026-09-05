@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { CHAIN, CLAIM_CATEGORY, TABLES } from '../data/site';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import Trailer from '../components/Trailer.astro';
@@ -11,8 +12,8 @@ import Faq from '../components/Faq.astro';
 import Footer from '../components/Footer.astro';
 ---
 <Layout
-  title="Baby Guy — Bet. Run. Cash out."
-  description="Battle royale for USDC stakes, on-chain results. Three formats playable now in the browser: 1v1, squads of four and 16-player arenas, on 2, 5 and 10 USDC tables."
+  title={`Baby Guy — the first ${CLAIM_CATEGORY} game on ${CHAIN}`}
+  description={`Obstacle-course battle royale for USDC stakes, settled on ${CHAIN}. Three formats playable now in the browser — 1v1, squads of four, 16-player arenas — on ${TABLES.join(", ")} USDC tables.`}
 >
   <Header />
   <main>
