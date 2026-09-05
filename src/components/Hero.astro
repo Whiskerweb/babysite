@@ -44,20 +44,31 @@ import { GAME_URL, PLAY_LABEL, CHAIN, CLAIM_CATEGORY } from '../data/site';
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    background: url('/img/hero-bg.jpg') center 30% / cover no-repeat, var(--violet-900);
+    background: url('/img/hero-bg.webp') center 36% / cover no-repeat, var(--violet-900);
     padding: clamp(90px, 16vh, 170px) 20px clamp(60px, 8vh, 96px);
     overflow: hidden;
   }
+  /* L'ancien voile etait un lavis violet sur les 58 % du bas, regle pour une
+     image SOMBRE. La nouvelle est claire — ciel bleu, estrade jaune — et ce
+     lavis la noyait a moitie. Ici : une flaque ELLIPTIQUE derriere la colonne
+     de texte, qui laisse les bords lumineux (Vlad a gauche, Trump a droite),
+     un socle court en bas pour rejoindre la section suivante, et un voile
+     leger en haut sous l'en-tete. */
   .hero__scrim{
     position: absolute; inset: 0;
     background:
-      linear-gradient(180deg, rgba(38,26,88,.38) 0%, rgba(38,26,88,0) 18%),
+      radial-gradient(112% 64% at 50% 110%,
+        rgba(30,18,72,.94) 0%,
+        rgba(30,18,72,.82) 28%,
+        rgba(30,18,72,.5) 48%,
+        rgba(30,18,72,.16) 66%,
+        rgba(30,18,72,0) 80%),
       linear-gradient(0deg,
         var(--violet-900) 0%,
-        rgba(52,38,111,.94) 16%,
-        rgba(52,38,111,.7) 30%,
-        rgba(52,38,111,.26) 44%,
-        rgba(52,38,111,0) 58%);
+        rgba(52,38,111,.8) 7%,
+        rgba(52,38,111,.3) 16%,
+        rgba(52,38,111,0) 28%),
+      linear-gradient(180deg, rgba(38,26,88,.34) 0%, rgba(38,26,88,0) 13%);
   }
   .hero__content{
     position: relative;
@@ -101,7 +112,7 @@ import { GAME_URL, PLAY_LABEL, CHAIN, CLAIM_CATEGORY } from '../data/site';
     text-transform: uppercase;
     letter-spacing: -1.2px;
     white-space: nowrap;
-    text-shadow: 0 6px 24px rgba(0,0,0,.65), 0 2px 4px rgba(0,0,0,.5);
+    text-shadow: 0 6px 26px rgba(0,0,0,.72), 0 2px 5px rgba(0,0,0,.62);
   }
   .hero__sub{
     max-width: 46ch;
@@ -109,9 +120,30 @@ import { GAME_URL, PLAY_LABEL, CHAIN, CLAIM_CATEGORY } from '../data/site';
     font-weight: 600;
     line-height: 1.5;
     color: rgba(255,255,255,.88);
-    text-shadow: 0 2px 12px rgba(0,0,0,.7);
+    text-shadow: 0 2px 14px rgba(0,0,0,.8), 0 1px 3px rgba(0,0,0,.6);
   }
   .hero__trailer{ text-shadow: 0 2px 10px rgba(0,0,0,.7); }
+
+  /* Une illustration 16/9 derriere un hero de telephone, en `cover`, ne montre
+     que les 26 % du milieu : le logo coupe des deux cotes et plus un seul
+     personnage. Sous 720 px elle cesse donc de remplir et devient une BANDE en
+     haut, a sa largeur entiere, le texte passant dessous sur le violet.
+     56.28vw = 941 / 1672, la hauteur de l'image a pleine largeur. */
+  @media (max-width: 720px){
+    .hero{
+      min-height: 0;
+      align-items: stretch;
+      background: url('/img/hero-bg.webp') center top / 100% auto no-repeat, var(--violet-900);
+      padding: calc(56.28vw + clamp(16px, 4vw, 30px)) 20px clamp(42px, 6vh, 62px);
+    }
+    .hero__scrim{
+      background: linear-gradient(180deg,
+        rgba(52,38,111,0) calc(56.28vw - 74px),
+        rgba(52,38,111,.72) calc(56.28vw - 26px),
+        var(--violet-900) calc(56.28vw + 2px));
+    }
+    .hero__content{ justify-content: flex-start; }
+  }
 
   @media (max-width: 560px){
     .hero__claim{ padding: 8px 14px; gap: 7px; letter-spacing: .2px; line-height: 1.45; }

@@ -82,7 +82,9 @@ public/icons/robinhood-plume*.png   the feather, 3 variants (black / lime / whit
 public/videos/trailer.mp4      27 s, 1600×900, 7.2 MB (re-encoded from V1trailer-sous-titre.mp4)
 public/posters/trailer.jpg     frame at 6 s
 public/posters/jeu-course.jpg  poster for the gameplay loop
-public/img/hero-bg.jpg         hero background
+public/img/hero-bg.webp        hero key art, 1672×941, 120 kB (from a 1.76 MB PNG)
+public/img/hero-og.jpg         1200×675 JPEG, the og:image — several scrapers, X included,
+                               handle WebP poorly, and X is the only account we have open
 public/img/logo.png            official logo, grey background removed
 ```
 
@@ -101,6 +103,22 @@ sections, which were removed from the page.
 
 Vercel, static, from `main`. `npm run build` locally reproduces exactly what it serves —
 there is no server-side anything on this page.
+
+## The hero image
+
+The key art is **landscape 16:9 and carries the BABY GUY logo inside it**, which the hero
+treatment has to respect in two ways:
+
+- **The scrim is a pool, not a wash.** The old one was a violet gradient over the bottom
+  58 %, tuned for a dark photograph. This art is bright — blue sky, yellow podium — and
+  that wash drowned half of it. It is now an ellipse behind the text column, so the edges
+  stay lit (Vlad on the left, Trump on the right), plus a short base to meet the section
+  below.
+- **Under 720 px the image stops filling and becomes a band.** In `cover`, a 16:9 image
+  behind a phone-shaped hero shows only the middle ~26 %: the logo clipped on both sides
+  and not one character left. It is now laid full width at the top (`100% auto`, height =
+  56.28vw = 941/1672) with the copy below it on violet. Change the art's aspect ratio and
+  that number has to change with it.
 
 ## A trap this repo fell into once
 
