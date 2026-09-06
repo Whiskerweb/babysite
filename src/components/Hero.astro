@@ -128,19 +128,19 @@ import { GAME_URL, PLAY_LABEL, CHAIN, CLAIM_CATEGORY } from '../data/site';
      que les 26 % du milieu : le logo coupe des deux cotes et plus un seul
      personnage. Sous 720 px elle cesse donc de remplir et devient une BANDE en
      haut, a sa largeur entiere, le texte passant dessous sur le violet.
-     56.28vw = 941 / 1672, la hauteur de l'image a pleine largeur. */
+     56.31vw = 941 / 1671, la hauteur de l'image a pleine largeur. */
   @media (max-width: 720px){
     .hero{
       min-height: 0;
       align-items: stretch;
       background: url('/img/hero-bg.webp') center top / 100% auto no-repeat, var(--violet-900);
-      padding: calc(56.28vw + clamp(16px, 4vw, 30px)) 20px clamp(42px, 6vh, 62px);
+      padding: calc(56.31vw + clamp(16px, 4vw, 30px)) 20px clamp(42px, 6vh, 62px);
     }
     .hero__scrim{
       background: linear-gradient(180deg,
-        rgba(52,38,111,0) calc(56.28vw - 74px),
-        rgba(52,38,111,.72) calc(56.28vw - 26px),
-        var(--violet-900) calc(56.28vw + 2px));
+        rgba(52,38,111,0) calc(56.31vw - 74px),
+        rgba(52,38,111,.72) calc(56.31vw - 26px),
+        var(--violet-900) calc(56.31vw + 2px));
     }
     .hero__content{ justify-content: flex-start; }
   }
