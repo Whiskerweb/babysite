@@ -63,12 +63,14 @@ export const WALLETS = ['MetaMask', 'Rabby', 'Robinhood Wallet'];
  *  BabyMusk, BabyNetan — so a player who reads the name here recognises the
  *  entry in the wardrobe.
  *
- *  CAREFUL: as of 5 September 2026 this character does NOT exist in the game.
- *  A character needs a rigged `char-<id>.glb` in `tools/feel-lab/public/models/`,
- *  an entry in `cosmetics.js:MODELS`, and — for a sign-up grant — a rule in
- *  `boutique.js`, which today knows only one way to unlock anything (post on X).
- *  Until those three land, this section promises something the game does not
- *  hand over, and it does so at the exact moment someone signs up. */
+ *  IL EXISTE, depuis le 5 septembre 2026 — il n'existait pas quand cette section
+ *  a ete ecrite, et c'etait signale ici comme une promesse sans rien derriere.
+ *  Dans le jeu il porte l'id `char-tinytrader` (`cosmetics.js:MODELS`, GLB rigge
+ *  dans `tools/feel-lab/public/models/`), et il ne s'achete ni ne se gagne : une
+ *  BOITE CADEAU plein ecran attend un clic a la premiere arrivee au lobby, et
+ *  l'ouvrir donne le skin et l'equipe (`boutique.js`, `cadeau.js`). D'ou « open
+ *  your gift » plutot que « on te le donne » dans la copie ci-dessous : le joueur
+ *  a un geste a faire, et c'est le premier du jeu. */
 export const SKIN = {
   name: 'BabyVlad',
   who: 'Vlad, the Robinhood CEO',

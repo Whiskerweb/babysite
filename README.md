@@ -44,7 +44,7 @@ burger menu carries the play link too — on mobile it is the panel the visitor 
 | `CLAIM_CATEGORY` | `'run-to-earn'` | How we name what this is. Stated once so the hero badge, the `<title>` and the meta description cannot word it three different ways. |
 | `FAUCET_USDC` / `FAUCET_EVERY_MINUTES` | 20 / 60 | The test {USDC} the game **mints** on request — not a public faucet, nobody sells test {USDC}. Defaults from `backend/src/config.js`, live (no `ROBINET_MICROS` override is set). Cannot exist on mainnet: real USDC has no mint function. |
 | `WALLETS` | MetaMask, Rabby, Robinhood Wallet | Read off the live sign-in gate, not guessed — naming a wallet the gate does not offer sends someone to install one for nothing. |
-| `SKIN` | BabyVlad | The sign-up skin shown in the Play section. **It does not exist in the game yet** — see the warning below. |
+| `SKIN` | BabyVlad | The welcome skin shown in the Play section. Ships in the game as `char-tinytrader`, opened from a gift box on first arrival in the lobby. |
 | `TABLES` | `[2, 5, 10]` | The tables the server opens, read off the live game's `/etat`. A table named here that the server does not open sends a visitor to a queue that never fills. |
 | `formats` | 1v1 / Squad / Arena | The three formats, drawn as pips in `Formats.astro`. `cuts` is the game's own `MODES[mode].survivants` (`16 → 8 → 4 → 1`), so **its length is the round count** — 1, 2 and 3, which is why the page no longer says "3 rounds" outside the arena. `paid` is the count of non-bronze ranks from `grade(mode, rank)`: half the table, in all three. |
 | `BURN_PCT` | `'10'` | Share of every match bought back and burned = the whole commission. |
@@ -57,14 +57,12 @@ Numbers used across the page (5 USDC table, 16 players, 10 % commission, 80 USDC
 25 / 12.50 / 8.50 / 6.00 / stake back / nothing) all come from `payouts`, `TABLE_STAKE`,
 `PLAYERS`, `COMMISSION_PCT` and `POT` in the same file.
 
-> **`SKIN` promises a character the game does not have.** The Play section says
-> BabyVlad is free at sign-up. As of 5 September 2026 the game's catalogue
-> (`tools/feel-lab/src/cosmetics.js:MODELS`) holds five characters and none of
-> them is Vlad, there is no `char-babyvlad.glb` in `tools/feel-lab/public/models/`,
-> and `boutique.js` knows exactly one way to unlock anything — post on X. Three
-> things have to land before this line is true: a rigged GLB, a catalogue entry,
-> and a sign-up grant. Until then the page promises something at the precise
-> moment someone signs up, which is the worst place to promise anything.
+> **`SKIN` is real now.** It was not when this section was written, and the warning
+> that stood here said so. BabyVlad shipped on 5 September 2026 as `char-tinytrader`
+> — rigged GLB, catalogue entry, and a welcome **gift box** that waits for a click on
+> the player's first arrival in the lobby, then unlocks and equips him. The copy says
+> "open it and he is yours" rather than "we give it to you" because that click is the
+> real mechanism, and it is the player's first act in the game.
 
 > **`payouts` no longer matches the shipped game.** The table here promises a fixed
 > 25.00 for first place on a 5 USDC arena; the game draws the winner's gain on a wheel
