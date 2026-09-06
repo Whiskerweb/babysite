@@ -79,8 +79,11 @@ Numbers used across the page (5 USDC table, 16 players, 10 % commission, 80 USDC
 public/img/babyvlad.webp       632×760, 55 kB (from a 1144×1375 / 1.3 MB PNG — 24x smaller)
 public/icons/robinhood-plume*.png   the feather, 3 variants (black / lime / white),
                                copied from the game's own tools/feel-lab/public/icons/
-public/videos/trailer.mp4      27 s, 1600×900, 7.2 MB (re-encoded from V1trailer-sous-titre.mp4)
-public/posters/trailer.jpg     frame at 6 s
+public/videos/trailer.mp4      30 s, 1600×900, 8.4 MB (re-encoded from finalnonst_ST.mp4,
+                               2560×1440 / 42 MB — 11 Mbps is not a landing page)
+public/posters/trailer.jpg     frame at 7.5 s — five characters on the course, the widest
+                               shot in the film. The subtitles are burned in throughout, so
+                               a caption-free frame is a close-up or nothing
 public/posters/jeu-course.jpg  poster for the gameplay loop
 public/img/hero-bg.webp        hero key art, 1671×941, 128 kB (from a 1.79 MB PNG)
 public/img/hero-og.jpg         1200×675 JPEG, the og:image — several scrapers, X included,
